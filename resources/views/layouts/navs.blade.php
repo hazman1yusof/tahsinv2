@@ -1,6 +1,8 @@
 <div class="ui fixed top menu sidemenu" id="sidemenu_topmenu" style="z-index: 5000;">
-    <a class="item" id="showSidebar" style="padding: 20px 25px 15px 25px !important;"><i class="sidebar inverted icon"></i></a>
+    <a class="item" id="showSidebar" style="padding: 20px 15px 20px 15px !important;"><img src="{{ asset('img/quran.png')}}"></a>
+    <span class="topmenu_title">Keluarga AL-Quran</span>
     <div class="right menu">
+
     </div>
 </div>
 
