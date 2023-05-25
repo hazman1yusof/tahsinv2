@@ -15,6 +15,11 @@ class SetupController extends Controller
 
     }
 
+    public function setup_user(Request $request){
+
+        return view('setup_user');
+    }
+
     public function table(Request $request){
         switch($request->action){
             case 'get_weeks':
@@ -32,27 +37,6 @@ class SetupController extends Controller
             default:
                 return 'error happen..';
         }
-    }
-
-    public function show(Request $request){
-        $year = date_create('today')->format('Y');
-
-        $UTAMA = DB::table('rph.subjek_detail')
-                        ->where('subjek','MATEMATIK')
-                        ->where('type','UTAMA')
-                        ->get();
-
-        $SUBTOPIK = DB::table('rph.subjek_detail')
-                        ->where('subjek','MATEMATIK')
-                        ->where('type','SUBTOPIK')
-                        ->get();
-
-        $OBJEKTIF = DB::table('rph.subjek_detail')
-                        ->where('subjek','MATEMATIK')
-                        ->where('type','OBJEKTIF')
-                        ->get();
-
-        return view('rph',compact('year','UTAMA','SUBTOPIK','OBJEKTIF'));
     }
 
 

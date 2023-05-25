@@ -19,4 +19,4 @@ Route::get('/', function () {
 
 
 
-Route::get('/rph','SetupController@show');
+Route::get('/setup_user','SetupController@setup_user');
