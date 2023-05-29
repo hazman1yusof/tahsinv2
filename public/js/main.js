@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    change_topuserlength();
     // $('.ui.sidebar').sidebar({
     //         onHide: function() {
     //           console.log('on hidden');
@@ -10,7 +11,8 @@ $(document).ready(function() {
 
     $('.ui.sidebar').onHide
 
-    $('.ui.dropdown').dropdown()
+    $('.ui.dropdown').dropdown({'clearable':true});
+    $('.ui.checkbox').checkbox();
 
     $('.ui.left.fixed.vertical.icon.menu a').popup({position:'right center'});
 
@@ -44,5 +46,11 @@ $(document).ready(function() {
     if($('#navbar_hide').val() == 'navbar'){
         $('a#showSidebar').hide();
     }
-
 });
+
+function change_topuserlength(){
+    let username = $('span#topuser').text();
+
+    var resultname = username.slice(0, 12)+' ...';
+    $('span#topuser').text(resultname);
+}

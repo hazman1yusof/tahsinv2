@@ -2,7 +2,7 @@
     background-color: #284255 !important;
 }
 .sidemenu a{
-    padding: 25px !important;
+    padding: 20px 15px 20px 15px !important;
 }
 .sidemenu a:hover {
     background-color: #00B5AD !important;
@@ -25,6 +25,15 @@
 .container_sem {
     padding-left: 15px;
     padding-top: 50px;
+}
+h4.mytitle{
+    color: #767676;
+    text-align: center;
+    font-size: 21px;
+    padding: 5px;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    box-shadow: 1px 2px 2px 1px lightgray;
 }
 /*@media (max-width: 768px) {
     .ui.left.fixed.vertical.icon.menu {
@@ -93,4 +102,16 @@ div [class*="right floated"] {
 #toTop i {
   font-size: 25px;
   color: #f7fdff;
+}
+
+span.topmenu_title{
+    color: white;
+    letter-spacing: .1em;
+    padding: 10px 5px;
+    text-shadow: 1px 1px 10px white;
+}
+
+span.himsg{
+    padding: 5px 10px;
+    color: lightgrey;
 }

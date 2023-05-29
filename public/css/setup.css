@@ -1,0 +1,9 @@
+div.datablediv{
+	margin: 10px 0px;
+}
+div#example_filter{
+	text-align: right;
+}
+div#dt_user_filter label, div#dt_user_filter button{
+	margin: 5px;
+}

@@ -289,9 +289,14 @@ function emptyFormdata_div(div,except){
 		});
 	}
 
+	$(div+' .ui.dropdown').dropdown('clear');
 	$(div+' textarea').val("");
 	$(div+' input[type=text]').val("");
 	$(div+' input[type=number]').val("");
+	$(div+' input[type=date]').val("");
+	$(div+' input[type=time]').val("");
+	$(div+' input[type=checkbox]').prop('checked',false);
+	$(div+' input[type=radio]').prop('checked',false);
 
 	$( div+' input.error').css('border-color','rgb(204 204 204)');
 	$( div+' div.has-error' ).removeClass( "has-error" );
