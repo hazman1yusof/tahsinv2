@@ -54,20 +54,19 @@ class SetupController extends Controller
     public function save_user(Request $request){
         DB::beginTransaction();
 
+        $ajar = (!empty($request->ajar))?1:null;
+        $setup = (!empty($request->setup))?1:null;
+
         try {
-
-
-
-
             if($request->oper == 'add'){
                 DB::table('users')
                     ->insert([
-                        'username' => $request->year_id,
-                        'password' => strtoupper($request->hari),
-                        'kelas' => strtoupper($request->subjek),
-                        'type' => strtoupper($request->kelas),
-                        'ajar' => $request->masa_dari,
-                        'setup' => $request->masa_hingga
+                        'username' => $request->username,
+                        'password' => $request->username,
+                        'kelas' => $request->kelas,
+                        'type' => $request->type,
+                        'ajar' => $ajar,
+                        'setup' => $setup
                         // 'lastuser' => $request->masa_hingga,
                         // 'lastdate' => $request->masa_hingga
                     ]);
@@ -75,10 +74,10 @@ class SetupController extends Controller
                 DB::table('users')
                     ->where('idno',$request->idno)
                     ->update([
-                        'subjek' => strtoupper($request->subjek),
-                        'kelas' => strtoupper($request->kelas),
-                        'masa_dari' => $request->masa_dari,
-                        'masa_hingga' => $request->masa_hingga
+                        'kelas' => $request->kelas,
+                        'type' => $request->type,
+                        'ajar' => $ajar,
+                        'setup' => $setup
                     ]);
             }else if($request->oper == 'del'){
                 DB::table('jadual')
@@ -90,7 +89,7 @@ class SetupController extends Controller
             
             $responce = new stdClass();
             $responce->operation = 'SUCCESS';
-            return json_encode($responce);
+            echo json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();

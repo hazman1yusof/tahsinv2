@@ -1,4 +1,32 @@
 var currrow=null;
+
+var dt_user = $('#dt_user').DataTable({
+	ajax: "./setup_user/table?action=getuser",
+ 	dom: '<f<"datablediv"t>p>',
+	columns: [
+        {'data': 'idno'},
+        {'data': 'username'},
+        {'data': 'name'},
+        {'data': 'kelas'},
+        {'data': 'ajar','className': "center"},
+        {'data': 'setup','className': "center"},
+        {'data': 'type'}
+    ],
+    columnDefs: [
+    	{targets: [4,5],
+        	createdCell: function (td, cellData, rowData, row, col) {
+				if (cellData != null) {
+        			$(td).html('');
+					$(td).append(`<i class="check icon"></i>`);
+				}
+   			}
+   		}
+	],
+	drawCallback: function( settings ) {
+    	// $(this).find('tbody tr')[0].click();
+    }
+});
+
 $(document).ready(function () {
 	$("form#form_user").validate({
 		ignore: [], //check jgk hidden
@@ -11,22 +39,6 @@ $(document).ready(function () {
 	  		$(validator.errorList[0].element).focus();
 	  		alert('Please fill all mandatory field');
 	  	}
-	});
-
-	var dt_user = $('#dt_user').DataTable({
-		ajax: "./setup_user/table?action=getuser",
-	 	dom: '<f<"datablediv"t>p>',
-    	columns: [
-	        {'data': 'idno'},
-	        {'data': 'username'},
-	        {'data': 'name'},
-	        {'data': 'type'}
-	    ],
-	    columnDefs: [
-		],
-		drawCallback: function( settings ) {
-	    	// $(this).find('tbody tr')[0].click();
-	    }
 	});
 
 	$('#dt_user tbody').on('click','tr',function(){
@@ -88,15 +100,21 @@ function save_user(oper){
 		
 	},'json').fail(function(data) {
 
-  }).done(function(data){
-		init_jadual_setting();
-  });
+  	}).done(function(data){
+  		console.log(data);
+  		after_save();
+  	});
 }
 
 function pop_user(){
+	$('#idno').val(currrow.idno);
 	$('#username').val(currrow.username);
-	$('select[name=kelas]').val(currrow.kelas);
-	$('select[name=type]').val(currrow.type);
+	$('select[name=kelas]').dropdown('set selected', currrow.kelas);
+	$('select[name=type]').dropdown('set selected', currrow.type);
 	if(currrow.ajar ==  1)$('input[type=checkbox][name=ajar]').prop('checked',true);
-	if(currrow.ajar ==  1)$('input[type=checkbox][name=setup]').prop('checked',true);
+	if(currrow.setup ==  1)$('input[type=checkbox][name=setup]').prop('checked',true);
+}
+
+function after_save(){
+	dt_user.ajax.reload();
 }

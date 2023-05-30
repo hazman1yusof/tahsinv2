@@ -7,3 +7,6 @@ div#example_filter{
 div#dt_user_filter label, div#dt_user_filter button{
 	margin: 5px;
 }
+table td.center{
+	text-align: center !important;
+}

@@ -23,6 +23,9 @@
               <th>User id</th>
               <th>Username</th>
               <th>Name</th>
+              <th>Kelas</th>
+              <th>Mengajar</th>
+              <th>Setup</th>
               <th>User Type</th>
           </tr>
       </thead>
@@ -36,10 +39,10 @@
   <div class="content">
     <form class="ui form" id="form_user" autocomplete="off">
       <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
-      <input type="hidden" name="idno">
+      <input type="hidden" name="idno" id="idno">
       <div class="field">
         <label>Username</label>
-        <input type="text" name="username" id="username" class="uppercase" required>
+        <input type="text" name="username" id="username" class="uppercase" required readonly>
       </div>
       <div class="field">
           <label>Kelas</label>
