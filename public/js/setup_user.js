@@ -62,6 +62,12 @@ $(document).ready(function () {
 	$('#btn_add_user').click(function(){
 		openmodal('add');
 	});
+
+	$('#delete').click(function(){
+		if (confirm("Do you want to delete this user")) {
+		    save_user('del');
+		}
+	});
 });
 
 function openmodal(oper){
@@ -101,7 +107,6 @@ function save_user(oper){
 	},'json').fail(function(data) {
 
   	}).done(function(data){
-  		console.log(data);
   		after_save();
   	});
 }

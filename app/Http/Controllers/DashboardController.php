@@ -7,7 +7,7 @@ use stdClass;
 use DB;
 use Carbon\Carbon;
 
-class SetupController extends Controller
+class DashboardController extends Controller
 {   
 
     public function __construct()
@@ -15,14 +15,9 @@ class SetupController extends Controller
 
     }
 
-    public function setup_user(Request $request){
+    public function dashboard(Request $request){
 
-        return view('setup_user');
-    }
-
-    public function setup_kelas(Request $request){
-
-        return view('setup_kelas');
+        return view('dashboard');
     }
 
     public function table(Request $request){
@@ -85,7 +80,7 @@ class SetupController extends Controller
                         'setup' => $setup
                     ]);
             }else if($request->oper == 'del'){
-                DB::table('users')
+                DB::table('jadual')
                     ->where('idno',$request->idno)
                     ->delete();
             }

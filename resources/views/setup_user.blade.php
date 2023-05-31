@@ -84,6 +84,10 @@
     <button class="ui deny button" id="cancel">
       Cancel
     </button>
+    <button class="ui ok right labeled icon button red" id="delete">
+      Delete
+      <i class="trash alternate outline icon"></i>
+    </button>
     <button class="ui positive right labeled icon button" id="save">
       Save
       <i class="checkmark icon"></i>

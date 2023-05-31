@@ -19,8 +19,15 @@
 .ui.sidebar.inverted.vertical.menu {
     padding-top:90px;
 }
+.ui.sidebar.inverted.vertical.menu.sidemenu div.item{
+    padding: 10px 0px;
+}
+.ui.sidebar.inverted.vertical.menu.sidemenu div.header{
+    padding: 5px;
+    text-align: center;
+}
 .ui.left.fixed.vertical.icon.menu {
-        display: none;
+    display: none;
 }
 .container_sem {
     padding-left: 15px;
@@ -34,6 +41,7 @@ h4.mytitle{
     border: 1px solid lightgrey;
     border-radius: 10px;
     box-shadow: 1px 2px 2px 1px lightgray;
+    background: aliceblue;
 }
 /*@media (max-width: 768px) {
     .ui.left.fixed.vertical.icon.menu {

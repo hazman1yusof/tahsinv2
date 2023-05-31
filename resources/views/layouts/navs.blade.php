@@ -13,6 +13,10 @@
 </div>
 
 <div class="ui sidebar inverted vertical menu sidemenu">
-    <a class="item @if(Request::is('rph') || Request::is('rph/*')) {{'active'}} @endif" href="{{ url('/rph')}}"><i style="float: left" class="big chalkboard teacher icon"></i>RPH</a>
-    <a class="item @if(Request::is('setup_jadual') || Request::is('setup_jadual/*')) {{'active'}} @endif" href="{{ url('/setup_jadual')}}"><i style="float: left" class="big calendar alternate outline icon"></i>Setup Jadual</a>
+    <a class="item @if(Request::is('dashboard')) {{'active'}} @endif" href="{{ url('/dashboard')}}"><i style="float: left" class="big chalkboard teacher icon"></i>Dashboard</a>
+    <div class="item">
+         <div class="header">Setup </div>
+        <a class="item @if(Request::is('setup_user')){{'active'}} @endif" href="{{ url('/setup_user')}}"><i style="float: left" class="big users icon"></i>Setup Pelajar</a>
+        <a class="item @if(Request::is('setup_kelas')){{'active'}} @endif" href="{{ url('/setup_kelas')}}"><i style="float: left" class="big chalkboard icon"></i>Setup Kelas</a>
+    </div>
 </div>
