@@ -4,7 +4,7 @@ div.datablediv{
 div#example_filter{
 	text-align: right;
 }
-div#dt_user_filter label, div#dt_user_filter button{
+div#dt_user_filter label, div#dt_user_filter button,div#dt_kelas_filter label, div#dt_kelas_filter button,div#dt_jadual_filter label, div#dt_jadual_filter button{
 	margin: 5px;
 }
 table td.center{

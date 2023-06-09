@@ -15,8 +15,8 @@
 
 @section('content')
 
-<div class="ui container">
-    <h4 class="mytitle">Setup User</h4>
+<div class="ui container mycontainer">
+  <h4 class="mytitle">Setup User</h4>
   <table id="dt_user" class="ui celled table" style="width:100%">
       <thead>
           <tr>
@@ -27,6 +27,8 @@
               <th>Mengajar</th>
               <th>Setup</th>
               <th>User Type</th>
+              <th>Add User</th>
+              <th>Add Date</th>
           </tr>
       </thead>
   </table>

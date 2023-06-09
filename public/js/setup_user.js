@@ -10,7 +10,9 @@ var dt_user = $('#dt_user').DataTable({
         {'data': 'kelas'},
         {'data': 'ajar','className': "center"},
         {'data': 'setup','className': "center"},
-        {'data': 'type'}
+        {'data': 'type'},
+        {'data': 'adduser'},
+        {'data': 'adddate'}
     ],
     columnDefs: [
     	{targets: [4,5],
@@ -88,7 +90,6 @@ function openmodal(oper){
 			}
 		},
 		onHidden:function($element){
-			$('select[name=type]').val('AF');
 			emptyFormdata_div('form#form_user');
 		}
 	 }).modal('show');

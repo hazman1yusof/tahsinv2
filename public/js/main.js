@@ -54,3 +54,19 @@ function change_topuserlength(){
     var resultname = username.slice(0, 12)+' ...';
     $('span#topuser').text(resultname);
 }
+
+var getBrowserWidth = function(){
+    if(window.innerWidth < 768){
+        // Extra Small Device
+        return "xs";
+    } else if(window.innerWidth < 991){
+        // Small Device
+        return "sm"
+    } else if(window.innerWidth < 1199){
+        // Medium Device
+        return "md"
+    } else {
+        // Large Device
+        return "lg"
+    }
+};
