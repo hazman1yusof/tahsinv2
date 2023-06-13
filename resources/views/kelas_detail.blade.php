@@ -2,28 +2,46 @@
 
 @section('title', 'Kelas')
 
-@section('style')
-    
+@section('stylesheet')
+    <style type="text/css">
+        button.myback{
+            position: absolute !important;
+            left: 10px !important;
+            background: none !important;
+            top: 2px !important;
+        }
+    </style>
 @endsection
 
 @section('header')
     <script>
-        
+        var all_data ={
+            oper:'{{$oper}}',
+            ispast:'{{$ispast}}'
+        }
     </script>
 @endsection
 
 @section('content')
     <div class="ui container mycontainer">
-        <h4 class="mytitle" style="min-height: 46px;">
-            <button class="circular ui icon button" style="float: left;" onclick="history.back()">
+        <h4 class="mytitle" style="position: relative;">
+            <button class="circular ui icon button myback" onclick="history.back()">
                 <i class="arrow left icon"></i>
             </button> 
             Kelas
         </h4>
-        <form class="ui form" id="form_kelas" autocomplete="off" method="post">
-            <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
-            <input type="hidden" name="idno" id="idno" value="@if(!empty($kelas_detail)){{$kelas_detail->idno}}@endif">
-            <input type="hidden" name="oper" id="oper" value="{{$oper}}">
+        <form class="ui form" id="form_addedit_nonpast" autocomplete="off"  style="display:none">
+            <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="oper" value="{{$oper}}">
+            <input type="hidden" name="idno" value="@if(!empty($kelas_detail)){{$kelas_detail->idno}}@endif">
+            <input type="hidden" name="action" value="confirm_kelas">
+            <input type="hidden" name="kelas_id" value="{{request()->get('kelas_id')}}">
+            <input type="hidden" name="user_id" value="{{request()->get('user_id')}}">
+            <input type="hidden" name="jadual_id" value="{{request()->get('jadual_id')}}">
+            <input type="hidden" name="type" value="{{request()->get('type')}}">
+            <input type="hidden" name="date" value="{{request()->get('date')}}">
+            <input type="hidden" name="time" value="{{request()->get('time')}}">
+            <input type="hidden" name="status" value="@if(!empty($kelas_detail)){{$kelas_detail->status}}@endif">
             <div class="ui attached segment">
                 <table >
                     <tr>
@@ -43,14 +61,34 @@
                         <td>{{Carbon\Carbon::createFromFormat('H:i:s',request()->time)->format('g:i A')}}</td>
                     <tr>
                 </table>
-                <p>Confirm attending this Class?</p>
+                <p id="p_confirm" style="display:none">Confirm attending this Class?</p>
+                <p id="p_tak_confirm" style="display:none">Cancel attending this Class?</p>
             </div>
             <div class="ui two bottom attached buttons">
-                <div class="ui button" onclick="history.back()">Cancel</div>
-                <div class="ui positive button" >Confirm</div>
+                <div class="ui button" onclick="history.back()">Back</div>
+                <div class="ui positive button" id="confirm" style="display:none">Confirm</div>
+                <div class="ui negative button" id="tak_confirm" style="display:none">Cancel</div>
             </div>
-
         </form>
+
+        <form class="ui form" id="form_add_past" autocomplete="off" style="display:none">
+            <div class="ui attached segment" >
+                <p>Class already done and you not attend it, Sorry..</p>
+            </div>
+            <div class="ui two bottom attached buttons">
+                <div class="ui button" onclick="history.back()">Back</div>
+            </div>
+        </form>
+
+        <form class="ui form" id="form_edit_past" autocomplete="off" style="display:none">
+            <div class="ui attached segment" >
+                <p>Class already done and you attend it, congrats..</p>
+            </div>
+            <div class="ui two bottom attached buttons">
+                <div class="ui button" onclick="history.back()">Back</div>
+            </div>
+        </form>
+
     </div>
 @endsection
 

@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	var calendar = new FullCalendar.Calendar(calendarEl, {
   					initialView: 'dayGridMonth',
   					eventSources: [
-  						'./kelas/table?action=fcgetkelas',
-  						'./kelas/table?action=fcgetkelas_weekly',
+  						'./pengajar/table?action=fcgetkelas',
+  						'./pengajar/table?action=fcgetkelas_weekly',
   					],
   					dateClick: function(info) {
   						$('div#calendar td').removeClass('activetd');

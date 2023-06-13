@@ -113,7 +113,7 @@ function refreshGrid(grid,urlParam,oper){
 }
 
 function disableForm(formName, except){
-	$(formName+' div.ui.dropdown').addClass("disabled");
+	// $(formName+' div.ui.dropdown').addClass("disabled");
 
 	$(formName+' textarea').prop("disabled",true);
 	$(formName+' input').prop("disabled",true);
@@ -133,7 +133,7 @@ function disableForm(formName, except){
 }
 
 function enableForm(formName, except){
-	$(formName+' div.ui.dropdown').removeClass("disabled");
+	// $(formName+' div.ui.dropdown').removeClass("disabled");
 	
 	$(formName+' textarea').prop("disabled",false);
 	$(formName+' input').prop("disabled",false);
@@ -154,7 +154,7 @@ function enableForm(formName, except){
 }
 
 function readonlyForm(formName, except){
-	$(formName+' div.ui.dropdown').addClass("disabled");
+	// $(formName+' div.ui.dropdown').addClass("disabled");
 
 	$(formName+' textarea').prop("readonly",true);
 	$(formName+' input').prop("readonly",true);
@@ -174,7 +174,7 @@ function readonlyForm(formName, except){
 }
 
 function unreadonlyForm(formName, except){
-	$(formName+' div.ui.dropdown').removeClass("disabled");
+	// $(formName+' div.ui.dropdown').removeClass("disabled");
 	
 	$(formName+' textarea').prop("readonly",false);
 	$(formName+' input').prop("readonly",false);
@@ -289,7 +289,8 @@ function emptyFormdata_div(div,except){
 		});
 	}
 
-	$(div+' .ui.dropdown').dropdown('clear');
+	// $(div+' .ui.dropdown').dropdown('clear');
+	$(div+' .ui.dropdown').val("");
 	$(div+' textarea').val("");
 	$(div+' input[type=text]').val("");
 	$(div+' input[type=number]').val("");

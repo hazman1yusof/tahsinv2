@@ -1,6 +1,6 @@
 @extends('layouts.fomantic_main')
 
-@section('title', 'Kelas')
+@section('title', 'Kelas Pengajar')
 
 @section('style')
     
@@ -13,7 +13,7 @@
 
 @section('content')
     <div class="ui container mycontainer">
-        <h4 class="mytitle">Kelas</h4>
+        <h4 class="mytitle">Kelas Pengajar</h4>
         <div id='calendar'></div>
     </div>
 @endsection
@@ -25,7 +25,7 @@
 @section('js')
 <script src='https://cdn.jsdelivr.net/npm/moment@2.27.0/min/moment.min.js'></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-    <script type="text/javascript" src="{{ asset('js/kelas.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/pengajar.js') }}"></script>
 @endsection
 
 

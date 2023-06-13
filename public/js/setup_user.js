@@ -1,13 +1,13 @@
 var currrow=null;
 
 var dt_user = $('#dt_user').DataTable({
-	ajax: "./setup_user/table?action=getuser",
+	ajax: "./setup/table?action=getuser",
  	dom: '<f<"datablediv"t>p>',
 	columns: [
-        {'data': 'idno'},
+        {'data': 'id'},
         {'data': 'username'},
         {'data': 'name'},
-        {'data': 'kelas'},
+        {'data': 'kelas_name'},
         {'data': 'ajar','className': "center"},
         {'data': 'setup','className': "center"},
         {'data': 'type'},
@@ -84,7 +84,7 @@ function openmodal(oper){
 		onApprove:function($element){
 			if($("form#form_user").valid()) {
   				save_user(oper);
-				return true;
+				return false;
 			}else{
 				return false;
 			}
@@ -103,24 +103,25 @@ function save_user(oper){
 
 	var form_user = $("form#form_user").serializeArray();
 
-	$.post( "./setup_user/form?"+$.param(param),$.param(form_user), function( data ){
+	$.post( "./setup/form?"+$.param(param),$.param(form_user), function( data ){
 		
 	},'json').fail(function(data) {
-
+  		after_save();
   	}).done(function(data){
   		after_save();
   	});
 }
 
 function pop_user(){
-	$('#idno').val(currrow.idno);
+	$('#id').val(currrow.id);
 	$('#username').val(currrow.username);
-	$('select[name=kelas]').dropdown('set selected', currrow.kelas);
-	$('select[name=type]').dropdown('set selected', currrow.type);
+	$('select[name=kelas]').val(currrow.kelas);
+	$('select[name=type]').val(currrow.type);
 	if(currrow.ajar ==  1)$('input[type=checkbox][name=ajar]').prop('checked',true);
 	if(currrow.setup ==  1)$('input[type=checkbox][name=setup]').prop('checked',true);
 }
 
 function after_save(){
+	$('.ui.modal#mdl_user').modal('hide');
 	dt_user.ajax.reload();
 }

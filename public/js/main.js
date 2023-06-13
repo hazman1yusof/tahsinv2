@@ -11,7 +11,7 @@ $(document).ready(function() {
 
     $('.ui.sidebar').onHide
 
-    $('.ui.dropdown').dropdown({'clearable':true});
+    // $('.ui.dropdown').dropdown({'clearable':true});
     $('.ui.checkbox').checkbox();
 
     $('.ui.left.fixed.vertical.icon.menu a').popup({position:'right center'});

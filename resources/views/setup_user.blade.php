@@ -41,7 +41,7 @@
   <div class="content">
     <form class="ui form" id="form_user" autocomplete="off">
       <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
-      <input type="hidden" name="idno" id="idno">
+      <input type="hidden" name="id" id="id">
       <div class="field">
         <label>Username</label>
         <input type="text" name="username" id="username" class="uppercase" required readonly>
@@ -50,12 +50,9 @@
           <label>Kelas</label>
           <select class="ui dropdown" name="kelas">
             <option value="">Pilih Kelas</option>
-            <option value="kelas_1">Kelas 1</option>
-            <option value="kelas_2">Kelas 2</option>
-            <option value="kelas_3">Kelas 3</option>
-            <option value="kelas_4">Kelas 4</option>
-            <option value="kelas_5">Kelas 5</option>
-            <option value="k_tambahan">Kelas Tambahan</option>
+            @foreach ($kelas as $kelas_obj)
+              <option value="{{$kelas_obj->idno}}">{{ $kelas_obj->name }}</option>
+            @endforeach
           </select>
       </div>
       <div class="field">

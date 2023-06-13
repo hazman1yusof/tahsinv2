@@ -20,14 +20,17 @@ Route::get('/','DashboardController@dashboard');
 Route::get('/dashboard','DashboardController@dashboard');
 
 Route::get('/setup_user','SetupController@setup_user');
-Route::post('/setup_user/form','SetupController@form');
-Route::get('/setup_user/table','SetupController@table');
-
 Route::get('/setup_kelas','SetupController@setup_kelas');
-Route::post('/setup_kelas/form','SetupController@form');
-Route::get('/setup_kelas/table','SetupController@table');
+Route::get('/setup_jadual','SetupController@setup_jadual');
+Route::post('/setup/form','SetupController@form');
+Route::get('/setup/table','SetupController@table');
 
 Route::get('/kelas','KelasController@kelas');
 Route::get('/kelas_detail','KelasController@kelas_detail');
 Route::post('/kelas/form','KelasController@form');
 Route::get('/kelas/table','KelasController@table');
+
+Route::get('/pengajar','PengajarController@pengajar');
+Route::get('/pengajar_detail','PengajarController@pengajar_detail');
+Route::post('/pengajar/form','PengajarController@form');
+Route::get('/pengajar/table','PengajarController@table');

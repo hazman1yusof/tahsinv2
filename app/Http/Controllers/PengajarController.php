@@ -8,7 +8,7 @@ use DB;
 use Carbon\Carbon;
 use Auth;
 
-class kelasController extends Controller
+class PengajarController extends Controller
 {   
 
     public function __construct()
@@ -16,11 +16,24 @@ class kelasController extends Controller
         $this->middleware('auth');
     }
 
-    public function kelas(Request $request){
-        return view('kelas');
+    public function pengajar(Request $request){
+        $jadual = null;
+        if(!empty(Auth::user()->kelas)){
+            $mykelas = Auth::user()->kelas;
+            $jadual = DB::table('jadual')
+                    ->where('type','weekly')
+                    ->where('kelas_id',$mykelas);
+
+            if($jadual->exists()){
+                $jadual = $jadual->first();
+            }
+
+        }
+
+        return view('pengajar',compact('jadual'));
     }
 
-    public function kelas_detail(Request $request){
+    public function pengajar_detail(Request $request){
 
         $date = Carbon::createFromFormat('Y-m-d', $request->date);
         $kelas_detail=null;
@@ -55,7 +68,7 @@ class kelasController extends Controller
             $ispast=false;
         }
 
-        return view('kelas_detail',compact('oper','ispast','kelas_detail','kelas','jadual','date'));
+        return view('pengajar_detail',compact('oper','ispast','kelas_detail','kelas','jadual','date'));
     }
 
     public function table(Request $request){
@@ -84,31 +97,19 @@ class kelasController extends Controller
 
     public function fcgetkelas(Request $request){
 
-        $return = [];
-        if(!empty(Auth::user()->kelas)){
-            $mykelas = Auth::user()->kelas;
-            $jadual = DB::table('jadual as j')
-                        ->select('j.idno','j.kelas_id','j.title','j.type','j.hari','j.date','j.time','kd.status')
-                        ->leftJoin('kelas_detail as kd', function($join) use ($request){
-                            $join = $join->on('kd.kelas_id', '=', 'j.kelas_id')
-                                        ->where('kd.user_id', '=', Auth::user()->id)
-                                        ->on('kd.jadual_id', '=', 'j.idno')
-                                        ->on('kd.type', '=', 'j.type')
-                                        ->on('kd.date', '=', 'j.date')
-                                        ->on('kd.time', '=', 'j.time');
-                        })
-                        ->whereDate('j.date','>=',$request->start)
-                        ->whereDate('j.date','<=',$request->end)
-                        ->where('j.type','date')
-                        ->where('j.kelas_id',$mykelas);
+        $weekday = [];
+        $loopdate = Carbon::parse($request->start);
+        $until = Carbon::parse($request->end);
 
-            $return = $jadual->get();
+        $jadual = DB::table('jadual')
+                ->where('type','date')
+                ->whereDate('date','>=',$request->start)
+                ->whereDate('date','<=',$request->end);
 
-            foreach ($return as $key => $value) {
-                $url = './kelas_detail?kelas_id='.$value->kelas_id.'&user_id='.Auth::user()->id.'&jadual_id='.$value->idno.'&type='.$value->type.'&time='.$value->time;
-                $value->url = $url;
-            }
+        $return = $jadual->get();
 
+        foreach ($return as $key => $value) {
+            $value->url = './pengajar_detail?kelas_id='.$value->kelas_id.'&jadual_id='.$value->idno;
         }
 
         echo $return;
@@ -120,48 +121,24 @@ class kelasController extends Controller
         $loopdate = Carbon::parse($request->start);
         $until = Carbon::parse($request->end);
 
-        if(!empty(Auth::user()->kelas)){
-            $mykelas = Auth::user()->kelas;
+        $jadual = DB::table('jadual')
+                ->where('type','weekly')
+                ->first();
 
-            $jadual = DB::table('jadual')
-                    ->where('type','weekly')
-                    ->where('kelas_id',$mykelas)
-                    ->first();
-
-            while ($loopdate->lte($until)) {
+        while ($loopdate->lte($until)) {
 
 
-                $loopdate = $loopdate->next($jadual->hari);
+            $loopdate = $loopdate->next($jadual->hari);
 
-                $responce = new stdClass();
-                $responce->date = $loopdate->format('Y-m-d');
-                $responce->time = $jadual->time;
-                $responce->title = $jadual->title;
-                $responce->url = './kelas_detail?kelas_id='.$mykelas.'&user_id='.Auth::user()->id.'&jadual_id='.$jadual->idno.'&type='.$jadual->type.'&time='.$jadual->time;
+            $responce = new stdClass();
+            $responce->date = $loopdate->format('Y-m-d');
+            $responce->time = $jadual->time;
+            $responce->title = $jadual->title;
+            $responce->url = './pengajar_detail?kelas_id='.$jadual->kelas_id.'&jadual_id='.$jadual->idno;
 
-                $kelas_detail = DB::table('kelas_detail')
-                        ->where('kelas_id',$mykelas)
-                        ->where('user_id', '=', Auth::user()->id)
-                        ->where('jadual_id',$jadual->idno)
-                        ->where('type','weekly')
-                        ->whereDate('date','=',$loopdate->format('Y-m-d'));
-
-                if($kelas_detail->exists()){
-                    $kelas_detail_first = $kelas_detail->first();
-                    $responce->status = $kelas_detail_first->status;
-                }
-
-                array_push($weekday, $responce);
-            }
-
-            // $return = $jadual->get();
-
-            // foreach ($return as $key => $value) {
-            //     $url = './kelas_detail?kelas_id='.$value->kelas_id.'&user_id='.Auth::user()->id.'&jadual_id='.$value->idno.'&type='.$value->type.'&time='.$value->time;
-            //     $value->url = $url;
-            // }
-
+            array_push($weekday, $responce);
         }
+
         echo json_encode($weekday);
 
     }

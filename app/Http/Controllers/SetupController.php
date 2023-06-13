@@ -17,12 +17,32 @@ class SetupController extends Controller
 
     public function setup_user(Request $request){
 
-        return view('setup_user');
+        $kelas = DB::table('kelas')
+                    ->whereNull('tambahan')
+                    ->get();
+
+        return view('setup_user',compact('kelas'));
     }
 
     public function setup_kelas(Request $request){
 
-        return view('setup_kelas');
+        $ketua = DB::table('users')
+                    ->where('type','ketua_pelajar')
+                    ->get();
+
+        $pengajar = DB::table('users')
+                    ->where('ajar','1')
+                    ->get();
+
+        return view('setup_kelas',compact('ketua','pengajar'));
+    }
+
+    public function setup_jadual(Request $request){
+
+        $kelas = DB::table('kelas')
+                    ->get();
+
+        return view('setup_jadual',compact('kelas'));
     }
 
     public function table(Request $request){
@@ -59,7 +79,11 @@ class SetupController extends Controller
     }
 
     public function getuser(Request $request){
-        $users = DB::table('users')->get();
+        $users = DB::table('users as u')
+                    ->select('u.id','u.username','u.password','u.name','u.kelas','u.type','u.ajar','u.setup','u.telhp','u.address1','u.address2','u.address3','u.telno','u.postcode','u.newic','u.image','u.adduser','u.adddate','u.upduser','u.upddate','u.last_surah','u.last_ms','k.name as kelas_name')
+                    ->leftJoin('kelas as k', function($join) use ($request){
+                        $join = $join->on('k.idno', '=', 'u.kelas');
+                    })->get();
 
         $responce = new stdClass();
         $responce->data = $users;
@@ -68,7 +92,15 @@ class SetupController extends Controller
     }
 
     public function getkelas(Request $request){
-        $kelas = DB::table('kelas')->get();
+        $kelas = DB::table('kelas as k')
+                    ->select('k.idno','k.name','k.tambahan','k.terbuka','k.ketua','k.pengajar','k.adduser','k.adddate','k.upduser','k.upddate','u.username as ketua_desc','u2.username as pengajar_desc')
+                    ->leftJoin('users as u', function($join) use ($request){
+                        $join = $join->on('k.ketua', '=', 'u.id');
+                    })
+                    ->leftJoin('users as u2', function($join) use ($request){
+                        $join = $join->on('k.pengajar', '=', 'u2.id');
+                    })
+                    ->get();
 
         $responce = new stdClass();
         $responce->data = $kelas;
@@ -108,7 +140,7 @@ class SetupController extends Controller
                     ]);
             }else if($request->oper == 'edit'){
                 DB::table('users')
-                    ->where('idno',$request->idno)
+                    ->where('id',$request->id)
                     ->update([
                         'kelas' => $request->kelas,
                         'type' => $request->type,
@@ -119,7 +151,7 @@ class SetupController extends Controller
                     ]);
             }else if($request->oper == 'del'){
                 DB::table('users')
-                    ->where('idno',$request->idno)
+                    ->where('id',$request->id)
                     ->delete();
             }
 
@@ -193,22 +225,16 @@ class SetupController extends Controller
     public function save_jadual(Request $request){
         DB::beginTransaction();
 
-        if($request->type=='weekly'){
-            $time = $request->time_w;
-        }else{
-            $time = $request->time_s;
-        }
-
         try {
             if($request->oper == 'add'){
                 DB::table('jadual')
                     ->insert([
                         'kelas_id' => $request->kelas_id,
-                        'description' => $request->description,
+                        'title' => $request->title,
                         'type' => $request->type,
                         'hari' => $request->hari,
                         'date' => $request->date,
-                        'time' => $time,
+                        'time' => $request->time,
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -216,11 +242,11 @@ class SetupController extends Controller
                 DB::table('jadual')
                     ->where('idno',$request->idno)
                     ->update([
-                        'description' => $request->description,
+                        'title' => $request->title,
                         'type' => $request->type,
                         'hari' => $request->hari,
                         'date' => $request->date,
-                        'time' => $time,
+                        'time' => $request->time,
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);

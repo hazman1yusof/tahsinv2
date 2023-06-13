@@ -22,10 +22,10 @@
       <tr>
       <th>Kelas id</th>
       <th>Nama</th>
-      <th>Kelas Tambahan</th>
-      <th>Kelas Terbuka</th>
       <th>Ketua Kelas</th>
       <th>Pengajar Utama</th>
+      <th>Kelas Tambahan</th>
+      <th>Kelas Terbuka</th>
       <th>Add User</th>
       <th>Add Date</th>
       </tr>
@@ -49,22 +49,18 @@
           <label>Ketua Kelas</label>
           <select class="ui dropdown" name="ketua">
             <option value="">Pilih Ketua</option>
-            <option value="kelas_1">Kelas 1</option>
-            <option value="kelas_2">Kelas 2</option>
-            <option value="kelas_3">Kelas 3</option>
-            <option value="kelas_4">Kelas 4</option>
-            <option value="kelas_5">Kelas 5</option>
-            <option value="k_tambahan">Kelas Tambahan</option>
+            @foreach ($ketua as $ketua_obj)
+              <option value="{{$ketua_obj->id}}">{{ $ketua_obj->name }}</option>
+            @endforeach
           </select>
       </div>
       <div class="field">
         <label>Pengajar Utama</label>
         <select class="ui dropdown" name="pengajar">
           <option value="">Pilih Pengajar</option>
-          <option value="ustaz">Ustaz</option>
-          <option value="naqib">Naqib</option>
-          <option value="ketua_pelajar">Ketua Pelajar</option>
-          <option value="pelajar">Pelajar</option>
+          @foreach ($pengajar as $pengajar_obj)
+            <option value="{{$pengajar_obj->id}}">{{ $pengajar_obj->name }}</option>
+          @endforeach
         </select>
       </div>
       <div class="inline field">
@@ -146,13 +142,13 @@
         <label style="margin-right:8px">Hari</label>
         <select class="ui dropdown" name="hari">
           <option value="">Pilih Hari</option>
-          <option value="isnin">isnin</option>
-          <option value="selasa">selasa</option>
-          <option value="rabu">rabu</option>
-          <option value="khamis">khamis</option>
-          <option value="jumaat">jumaat</option>
-          <option value="sabtu">sabtu</option>
-          <option value="ahad">ahad</option>
+          <option value="Sunday">Sunday</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
         </select>
 
           <label style="margin-right:8px; margin-left: 8px;">Time</label>

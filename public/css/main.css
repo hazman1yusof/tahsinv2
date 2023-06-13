@@ -1,20 +1,19 @@
+
 span.topmenu_title{
     font-family: 'Lobster', cursive;
 }
-
 .ui.vertical.menu .item>i.icon {
     width: 1.18em !important;
     float: left !important;
     margin: 0 .5em 0 .5em !important;
 }
-
-body{
-    background-color: #DADADA !important;;
+body,body.pushable,body.pushable>.pusher  {
+    background-color: #DADADA !important;
     background-image:url('../img/mosque.png') !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
     background-position: center !important;
-    background-attachment: fixed !important;;
+    background-attachment: fixed !important;
     height: 100% !important;
     width: 100% !important;
 }
