@@ -7,6 +7,7 @@ use stdClass;
 use DB;
 use Carbon\Carbon;
 use Auth;
+use DateTimeZone;
 
 class PengajarController extends Controller
 {   
@@ -35,17 +36,7 @@ class PengajarController extends Controller
 
     public function pengajar_detail(Request $request){
 
-        $date = Carbon::createFromFormat('Y-m-d', $request->date);
-        $kelas_detail=null;
-
-        $kelas_detail_ = DB::table('kelas_detail')
-                    ->where('kelas_id',$request->kelas_id)
-                    ->where('user_id',$request->user_id)
-                    ->where('jadual_id',$request->jadual_id)
-                    ->where('type',$request->type)
-                    ->where('date',$request->date)
-                    ->where('time',$request->time)
-                    ->where('status','!=','cancel');
+        $date = Carbon::createFromFormat('Y-m-d', $request->date, new DateTimeZone('Asia/Kuala_Lumpur'));
 
         $jadual = DB::table('jadual')
                     ->where('idno',$request->jadual_id)
@@ -55,20 +46,24 @@ class PengajarController extends Controller
                     ->where('idno',$request->kelas_id)
                     ->first();
 
-        if($kelas_detail_->exists()){
-            $oper='edit';
-            $kelas_detail = $kelas_detail_->first();
-        }else{
-            $oper='add';
-        }
+        // $kelas_detail = new stdClass();
+        // $kelas_detail->kelas_id = $kelas->idno;
+        // $kelas_detail->jadual_id = $jadual->idno;
+        // $kelas_detail->type = $jadual->type;
+        // $kelas_detail->date = $date;
+        // $kelas_detail->time = $jadual->time;
 
-        if($date->isPast()){
+        // if($jadual->type=='weekly'){
+
+        // }
+
+        if($date->addDays(1)->isPast()){
             $ispast=true;
         }else{
             $ispast=false;
         }
 
-        return view('pengajar_detail',compact('oper','ispast','kelas_detail','kelas','jadual','date'));
+        return view('pengajar_detail',compact('ispast','kelas','jadual','date'));
     }
 
     public function table(Request $request){
@@ -78,6 +73,9 @@ class PengajarController extends Controller
                 break;
             case 'fcgetkelas_weekly':
                 $this->fcgetkelas_weekly($request);
+                break;
+            case 'getkelasdetail':
+                $this->getkelasdetail($request);
                 break;
             default:
                 return 'error happen..';
@@ -140,6 +138,27 @@ class PengajarController extends Controller
         }
 
         echo json_encode($weekday);
+
+    }
+
+    public function getkelasdetail(Request $request){
+         $kelas_detail = DB::table('kelas_detail as kd')
+                            ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.adddate','kd.adduser','kd.surah','kd.ms','kd.remark','kd.status','u.name')
+                            ->leftJoin('users as u', function($join) use ($request){
+                                $join = $join->on('u.id', '=', 'kd.user_id');
+                            })
+                            ->where('kd.kelas_id',$request->kelas_id)
+                            ->where('kd.jadual_id',$request->jadual_id)
+                            ->where('kd.type',$request->type)
+                            ->where('kd.date',$request->date)
+                            ->where('kd.time',$request->time)
+                            ->where('kd.status','confirm')
+                            ->get();
+
+        $responce = new stdClass();
+        $responce->data = $kelas_detail;
+
+        echo json_encode($responce);
 
     }
 

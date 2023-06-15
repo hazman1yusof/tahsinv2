@@ -7,6 +7,7 @@ use stdClass;
 use DB;
 use Carbon\Carbon;
 use Auth;
+use DateTimeZone;
 
 class kelasController extends Controller
 {   
@@ -22,7 +23,7 @@ class kelasController extends Controller
 
     public function kelas_detail(Request $request){
 
-        $date = Carbon::createFromFormat('Y-m-d', $request->date);
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $request->date.' '.$request->time, new DateTimeZone('Asia/Kuala_Lumpur'));
         $kelas_detail=null;
 
         $kelas_detail_ = DB::table('kelas_detail')
