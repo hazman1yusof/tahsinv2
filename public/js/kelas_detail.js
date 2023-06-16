@@ -9,14 +9,14 @@ if(all_data.ispast){
 	if(all_data.oper == 'add'){
 		$('#confirm,#p_confirm').show();
 	}else{
-		$('#tak_confirm,#p_tak_confirm').show();
+		$('#confirm,#tak_confirm,#p_tak_confirm').show();
 	}
 }
 
 $(document).ready(function() {
 	$('div#confirm').click(function(){
 
-		$('input[name=status]').val('confirm');
+		$('input[name=status]').val('Confirm');
 		var formdata = $("form#form_addedit_nonpast").serializeArray();
 
 		$.post( "./kelas/form",$.param(formdata), function( data ){
@@ -29,7 +29,7 @@ $(document).ready(function() {
 
 	$('div#tak_confirm').click(function(){
 
-		$('input[name=status]').val('cancel');
+		$('input[name=status]').val('Cancel');
 		var formdata = $("form#form_addedit_nonpast").serializeArray();
 
 		$.post( "./kelas/form",$.param(formdata), function( data ){

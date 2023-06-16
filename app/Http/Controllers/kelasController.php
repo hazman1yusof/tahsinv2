@@ -180,7 +180,7 @@ class kelasController extends Controller
                                 ->where('time',$request->time);
 
             if($kelas_detail->exists()){
-                if($request->status == 'cancel'){
+                if($request->status == 'Cancel'){
                     DB::table('kelas_detail')
                         ->where('kelas_id',$request->kelas_id)
                         ->where('user_id',$request->user_id)
@@ -189,6 +189,18 @@ class kelasController extends Controller
                         ->where('date',$request->date)
                         ->where('time',$request->time)
                         ->delete();
+                }else{
+                    DB::table('kelas_detail')
+                        ->where('kelas_id',$request->kelas_id)
+                        ->where('user_id',$request->user_id)
+                        ->where('jadual_id',$request->jadual_id)
+                        ->where('type',$request->type)
+                        ->where('date',$request->date)
+                        ->where('time',$request->time)
+                        ->update([
+                            'surah' => $request->surah,
+                            'ms' => $request->ms
+                        ]);
                 }
             }else{
                 DB::table('kelas_detail')
@@ -199,6 +211,8 @@ class kelasController extends Controller
                         'type' => $request->type,
                         'date' => $request->date,
                         'time' => $request->time,
+                        'surah' => $request->surah,
+                        'ms' => $request->ms,
                         'status' => 'confirm',
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'adduser' => session('username')

@@ -45,6 +45,7 @@
                       <th>Name</th>
                       <th>Surah</th>
                       <th>M/S</th>
+                      <th>Status</th>
                   </tr>
             </thead>
         </table>
@@ -58,8 +59,51 @@
         <form class="ui form" id="form_kelas_detail" autocomplete="off">
           <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
           <input type="hidden" name="idno">
-          <label>Remarks</label>
-          <textarea></textarea>
+
+            <div class="ui segment tertiary inverted blue">
+                <a class="ui blue ribbon label">Muka Surat Sebelum</a>
+                <div class="ui two column grid">
+                  <div class="left attached column field" style="padding-right:2px;">
+                      <label>Muka Surat</label>
+                      <div class="ui fluid input">
+                        <input type="number" placeholder="Muka Surat" name="surah" id="surah" readonly>
+                      </div>
+                  </div>
+                  <div class="right attached column field" style="padding-left:2px">
+                        <label>No. Ayat</label>
+                      <div class="ui fluid input">
+                        <input type="number" placeholder="No. Ayat" name="ms" id="ms" readonly>
+                      </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="field">
+              <label>Remarks</label>
+              <textarea></textarea>
+            </div>
+
+            <div class="field">
+                <div class="ui yellow rating" data-rating="3" data-max-rating="5"></div>
+            </div>
+
+            <div class="ui segment tertiary inverted green">
+                <a class="ui green ribbon label">Muka Surat Selepas</a>
+                <div class="ui two column grid">
+                  <div class="left attached column field" style="padding-right:2px;">
+                        <label>Muka Surat</label>
+                      <div class="ui fluid input">
+                        <input type="number" placeholder="Muka Surat" name="surah2" id="surah2">
+                      </div>
+                  </div>
+                  <div class="right attached column field" style="padding-left:2px">
+                        <label>No. Ayat</label>
+                      <div class="ui fluid input">
+                        <input type="number" placeholder="No. Ayat" name="ms2" id="ms2">
+                      </div>
+                  </div>
+                </div>
+            </div>
         </form>
       </div>
       <div class="actions">

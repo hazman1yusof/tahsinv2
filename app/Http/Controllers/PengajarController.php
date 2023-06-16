@@ -85,8 +85,8 @@ class PengajarController extends Controller
 
     public function form(Request $request){
         switch($request->action){
-            case 'confirm_kelas':
-                $this->confirm_kelas($request);
+            case 'save_kelas_detail':
+                $this->save_kelas_detail($request);
                 break;
             default:
                 return 'error happen..';
@@ -162,7 +162,7 @@ class PengajarController extends Controller
 
     }
 
-    public function confirm_kelas(Request $request){
+    public function save_kelas_detail(Request $request){
         DB::beginTransaction();
         try {
             
@@ -175,33 +175,34 @@ class PengajarController extends Controller
                                 ->where('time',$request->time);
 
             if($kelas_detail->exists()){
-                if($request->status == 'cancel'){
-                    DB::table('kelas_detail')
-                        ->where('kelas_id',$request->kelas_id)
-                        ->where('user_id',$request->user_id)
-                        ->where('jadual_id',$request->jadual_id)
-                        ->where('type',$request->type)
-                        ->where('date',$request->date)
-                        ->where('time',$request->time)
-                        ->delete();
-                }
+                dd('ada');
+                // if($request->status == 'cancel'){
+                //     DB::table('kelas_detail')
+                //         ->where('kelas_id',$request->kelas_id)
+                //         ->where('user_id',$request->user_id)
+                //         ->where('jadual_id',$request->jadual_id)
+                //         ->where('type',$request->type)
+                //         ->where('date',$request->date)
+                //         ->where('time',$request->time)
+                //         ->delete();
+                // }
             }else{
-                DB::table('kelas_detail')
-                    ->insert([
-                        'kelas_id' => $request->kelas_id,
-                        'user_id' => $request->user_id,
-                        'jadual_id' => $request->jadual_id,
-                        'type' => $request->type,
-                        'date' => $request->date,
-                        'time' => $request->time,
-                        'status' => 'confirm',
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'adduser' => session('username')
-                    ]);
+                // DB::table('kelas_detail')
+                //     ->insert([
+                //         'kelas_id' => $request->kelas_id,
+                //         'user_id' => $request->user_id,
+                //         'jadual_id' => $request->jadual_id,
+                //         'type' => $request->type,
+                //         'date' => $request->date,
+                //         'time' => $request->time,
+                //         'status' => 'confirm',
+                //         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                //         'adduser' => session('username')
+                //     ]);
             }
             
 
-            DB::commit();
+            // DB::commit();
             
             $responce = new stdClass();
             $responce->operation = 'SUCCESS';
