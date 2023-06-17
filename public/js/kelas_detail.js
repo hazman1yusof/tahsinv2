@@ -1,5 +1,11 @@
 if(all_data.ispast || my_marked==1){
 	$('.div_past_marked').hide();
+}else{
+	$('.div_past_marked').show();
+}
+
+if(my_marked == 1){
+	$('#div_marked').show();
 }
 
 $("#form#form_nonpast").validate({

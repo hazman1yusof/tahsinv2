@@ -104,7 +104,7 @@
                         <td>{{Carbon\Carbon::createFromFormat('H:i:s',request()->time)->format('g:i A')}}</td>
                     <tr>
                 </table>
-                <div class="ui grid div_past_marked">
+                <div class="ui grid div_past_marked" style="display:none">
                   <div class="four wide column" style="padding: 15px 1px 15px 15px;">
                       <label>Giliran</label>
                       <select id="pos" name="pos" required>
@@ -124,22 +124,22 @@
                   </div>
                 </div>
             </div>
-            <div class="ui two bottom attached buttons div_past_marked">
+            <div class="ui two bottom attached buttons div_past_marked" style="display:none">
                 <div class="ui negative button" id="tak_confirm">Tidak Hadir Kelas</div>
                 <div class="ui positive button" id="confirm">Hadir Kelas</div>
             </div>
         </form>
 
-        <form class="ui form" autocomplete="off">
-            <div class="ui yellow segment" id="div_past_marked_show" style="margin-top:10px">
+        <form class="ui form" autocomplete="off"  id="div_marked" style="display:none">
+            <div class="ui yellow segment" style="margin-top:10px">
                 <div class="field">
                   <label>Nota Dari Ustaz</label>
-                  <textarea name="remark" id="remark" readonly>{{$kelas_detail->remark}}</textarea>
+                  <textarea name="remark" id="remark" readonly>@if(!empty($kelas_detail)){{$kelas_detail->remark}}@endif</textarea>
                 </div>
 
                 <div class="field">
                   <label>Rating Pengajian</label>
-                  <div id="rating" class="ui olive rating" data-icon="quran" data-rating="{{$kelas_detail->rating}}" data-max-rating="5"></div>
+                  <div id="rating" class="ui olive rating" data-icon="quran" data-rating="@if(!empty($kelas_detail)){{$kelas_detail->rating}}@endif" data-max-rating="5"></div>
                 </div>
             </div>
             <div class="ui segment tertiary inverted green msgreen">
@@ -148,13 +148,13 @@
                     <div class="left attached column field" style="padding-right:2px;padding-bottom: 2px;">
                           <label style="text-align: center">Muka Surat</label>
                         <div class="ui fluid input">
-                          <input class="inp_trans" type="number" placeholder="Muka Surat" name="surah2" id="surah2" value="{{$kelas_detail->surah2}}" readonly>
+                          <input class="inp_trans" type="number" placeholder="Muka Surat" name="surah2" id="surah2" value="@if(!empty($kelas_detail)){{$kelas_detail->surah2}}@endif" readonly>
                         </div>
                     </div>
                     <div class="right attached column field" style="padding-left:2px;padding-bottom: 2px;">
                           <label style="text-align: center">No. Ayat</label>
                         <div class="ui fluid input">
-                          <input class="inp_trans" type="number" placeholder="No. Ayat" name="ms2" id="ms2" value="{{$kelas_detail->ms2}}" readonly>
+                          <input class="inp_trans" type="number" placeholder="No. Ayat" name="ms2" id="ms2" value="@if(!empty($kelas_detail)){{$kelas_detail->ms2}}@endif" readonly>
                         </div>
                     </div>
                   </div>
