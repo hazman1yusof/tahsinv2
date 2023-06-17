@@ -21,8 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		                // Add additional functionality or styles to the event element here
 		                // info.el.querySelector('.fc-title').textContent = info.event.title;
 		                let oth = info.event._def.extendedProps
-		                if(oth.status == 'confirm'){
+		                if(oth.status == 'Hadir'){
 		                	$(info.el).css('background','green');
+		                }else if(oth.status == 'Tidak Hadir'){
+		                	$(info.el).css('background','red');
 		                }
 		            },
 	});

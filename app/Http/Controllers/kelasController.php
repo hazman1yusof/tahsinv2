@@ -27,28 +27,41 @@ class kelasController extends Controller
         $kelas_detail=null;
 
         $kelas_detail_ = DB::table('kelas_detail')
-                    ->where('kelas_id',$request->kelas_id)
-                    ->where('user_id',$request->user_id)
-                    ->where('jadual_id',$request->jadual_id)
-                    ->where('type',$request->type)
-                    ->where('date',$request->date)
-                    ->where('time',$request->time)
-                    ->where('status','!=','cancel');
-
-        $jadual = DB::table('jadual')
-                    ->where('idno',$request->jadual_id)
-                    ->first();
-
-        $kelas = DB::table('kelas')
-                    ->where('idno',$request->kelas_id)
-                    ->first();
+                        ->where('kelas_id',$request->kelas_id)
+                        ->where('user_id',$request->user_id)
+                        ->where('jadual_id',$request->jadual_id)
+                        ->where('type',$request->type)
+                        ->where('date',$request->date)
+                        ->where('time',$request->time);
 
         if($kelas_detail_->exists()){
-            $oper='edit';
             $kelas_detail = $kelas_detail_->first();
-        }else{
-            $oper='add';
         }
+
+        $jadual = DB::table('jadual as j')
+                    ->select('j.idno','j.kelas_id','j.title','j.type','j.hari','j.date','j.time','k.name')
+                    ->leftJoin('kelas as k', function($join) use ($request){
+                            $join = $join->on('k.idno', '=', 'j.kelas_id');
+                    })
+                    ->where('j.idno',$request->jadual_id)
+                    ->first();
+
+        $count_kelas = DB::table('users')
+                            ->where('kelas',$request->kelas_id)
+                            ->count();
+
+        $user_kd = DB::table('kelas_detail as kd')
+                        ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
+                        ->leftJoin('users as u', function($join) use ($request){
+                                $join = $join->on('u.id', '=', 'kd.user_id');
+                        })
+                        ->where('kd.kelas_id',$request->kelas_id)
+                        ->where('kd.jadual_id',$request->jadual_id)
+                        ->where('kd.type',$request->type)
+                        ->where('kd.date',$request->date)
+                        ->where('kd.time',$request->time)
+                        ->orderBy('kd.pos', 'asc')
+                        ->get();
 
         if($date->isPast()){
             $ispast=true;
@@ -56,7 +69,7 @@ class kelasController extends Controller
             $ispast=false;
         }
 
-        return view('kelas_detail',compact('oper','ispast','kelas_detail','kelas','jadual','date'));
+        return view('kelas_detail',compact('ispast','kelas_detail','jadual','date','count_kelas','user_kd'));
     }
 
     public function table(Request $request){
@@ -170,6 +183,20 @@ class kelasController extends Controller
     public function confirm_kelas(Request $request){
         DB::beginTransaction();
         try {
+
+            //tgk pos dah ada org amik
+            $chk_pos = DB::table('kelas_detail')
+                        ->where('kelas_id',$request->kelas_id)
+                        ->where('user_id','!=',$request->user_id)
+                        ->where('jadual_id',$request->jadual_id)
+                        ->where('type',$request->type)
+                        ->where('date',$request->date)
+                        ->where('time',$request->time)
+                        ->where('pos',$request->pos);
+
+            if($chk_pos->exists()){
+                throw new \Exception("Giliran yang anda pilih sudah penuh",500);
+            }
             
             $kelas_detail = DB::table('kelas_detail')
                                 ->where('kelas_id',$request->kelas_id)
@@ -179,17 +206,13 @@ class kelasController extends Controller
                                 ->where('date',$request->date)
                                 ->where('time',$request->time);
 
+            if($request->status == 'Tidak Hadir'){
+                $pos = 0;
+            }else{
+                $pos = $request->pos;
+            }
+
             if($kelas_detail->exists()){
-                if($request->status == 'Cancel'){
-                    DB::table('kelas_detail')
-                        ->where('kelas_id',$request->kelas_id)
-                        ->where('user_id',$request->user_id)
-                        ->where('jadual_id',$request->jadual_id)
-                        ->where('type',$request->type)
-                        ->where('date',$request->date)
-                        ->where('time',$request->time)
-                        ->delete();
-                }else{
                     DB::table('kelas_detail')
                         ->where('kelas_id',$request->kelas_id)
                         ->where('user_id',$request->user_id)
@@ -198,10 +221,11 @@ class kelasController extends Controller
                         ->where('date',$request->date)
                         ->where('time',$request->time)
                         ->update([
+                            'status' => $request->status,
+                            'pos' => $pos,
                             'surah' => $request->surah,
                             'ms' => $request->ms
                         ]);
-                }
             }else{
                 DB::table('kelas_detail')
                     ->insert([
@@ -213,7 +237,8 @@ class kelasController extends Controller
                         'time' => $request->time,
                         'surah' => $request->surah,
                         'ms' => $request->ms,
-                        'status' => 'confirm',
+                        'status' =>  $request->status,
+                        'pos' => $pos,
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'adduser' => session('username')
                     ]);
@@ -229,7 +254,12 @@ class kelasController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+
+            $responce = new stdClass();
+            $responce->operation = 'FAILURE';
+            $responce->msg = $e->getMessage();
+            echo json_encode($responce);
+
         }
 
     }

@@ -7,3 +7,102 @@
 div.datablediv{
 	margin: 10px 0px;
 }
+button.myback{
+    position: absolute !important;
+    left: 10px !important;
+    background: none !important;
+    top: 2px !important;
+}
+div.myitem{
+	border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px 1px;
+    margin: 2px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+div.myitem.hadir{
+	background: #d9fad7;
+}
+div.myitem.xhadir{
+	background: #fad7d7;
+}
+div.myitem > .grid{
+	margin: 0px !important;
+}
+div.pos{
+	font-size: 12px;
+    font-weight: bold;
+	float: left;
+	font-weight: bold;
+    border-right: 1px solid #d98e06;
+    padding: 0px 1px !important;
+}
+div.ms{
+	font-size: 12px;
+    font-weight: bold;
+    border-left: 1px solid #d98e06;
+    padding: 0px 5px !important;
+}
+div.name{
+	font-size: 12px;
+ 	word-wrap: break-word;
+    padding: 0px 5px !important;
+}
+input.error,select.error{
+	background: #ffebeb !important;
+    border-color: #eb9f9f !important;
+}
+div.user_kd{
+	max-height: 40vh;
+    overflow-y: scroll;
+}
+span.mytitle_name{
+	padding-left: 30px;
+}
+div.msblue{
+	padding: 5px 15px !important;
+	background-color: #aedcff !important;
+    border: 1px solid #2185d0 !important;
+    color: #fff !important;
+}
+div.msgreen{
+	padding: 5px 15px !important;
+	background-color: #c2ffd1 !important;
+    border: 1px solid #21ba45 !important;
+    color: #fff !important;
+}
+div.myflabel{
+	font-size: 10px !important;padding: 3px !important;top: -2px !important;
+}
+i.myficon{
+	margin:0px !important;
+}
+div.mytlabel{
+	position: absolute;
+    top: 6px;
+    right: 6px;
+}
+div.timer {
+	background: #d8e776 !important;
+	border-color: #8d8d2b !important;
+	padding: 8px 14px !important;
+	text-align: center !important;
+    font-weight: bold !important;
+}
+div.pos_time {
+    color: green !important;
+}
+div.neg_time {
+    color: darkred !important;
+}
+div.remark {
+	padding: 5px 15px !important;border-color: #8d8d2b !important;
+}
+input.inp_trans{
+	padding: 0px !important;
+    background: transparent !important;
+    border: none !important;
+    text-align: center !important;
+}

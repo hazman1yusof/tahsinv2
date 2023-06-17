@@ -37,25 +37,27 @@ class PengajarController extends Controller
     public function pengajar_detail(Request $request){
 
         $date = Carbon::createFromFormat('Y-m-d', $request->date, new DateTimeZone('Asia/Kuala_Lumpur'));
-
-        $jadual = DB::table('jadual')
-                    ->where('idno',$request->jadual_id)
+        
+        $jadual = DB::table('jadual as j')
+                    ->select('j.idno','j.kelas_id','j.title','j.type','j.hari','j.date','j.time','k.name')
+                    ->leftJoin('kelas as k', function($join) use ($request){
+                            $join = $join->on('k.idno', '=', 'j.kelas_id');
+                    })
+                    ->where('j.idno',$request->jadual_id)
                     ->first();
 
-        $kelas = DB::table('kelas')
-                    ->where('idno',$request->kelas_id)
-                    ->first();
-
-        // $kelas_detail = new stdClass();
-        // $kelas_detail->kelas_id = $kelas->idno;
-        // $kelas_detail->jadual_id = $jadual->idno;
-        // $kelas_detail->type = $jadual->type;
-        // $kelas_detail->date = $date;
-        // $kelas_detail->time = $jadual->time;
-
-        // if($jadual->type=='weekly'){
-
-        // }
+        $user_kd = DB::table('kelas_detail as kd')
+                        ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
+                        ->leftJoin('users as u', function($join) use ($request){
+                                $join = $join->on('u.id', '=', 'kd.user_id');
+                        })
+                        ->where('kd.kelas_id',$request->kelas_id)
+                        ->where('kd.jadual_id',$request->jadual_id)
+                        ->where('kd.type',$jadual->type)
+                        ->where('kd.date',$request->date)
+                        ->where('kd.time',$jadual->time)
+                        ->orderBy('kd.pos', 'asc')
+                        ->get();
 
         if($date->addDays(1)->isPast()){
             $ispast=true;
@@ -63,7 +65,20 @@ class PengajarController extends Controller
             $ispast=false;
         }
 
-        return view('pengajar_detail',compact('ispast','kelas','jadual','date'));
+        return view('pengajar_detail',compact('ispast','jadual','date','user_kd'));
+    }
+
+    public function mark(Request $request){
+
+        $user_kd = DB::table('kelas_detail as kd')
+                        ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','u.name')
+                        ->leftJoin('users as u', function($join) use ($request){
+                                $join = $join->on('u.id', '=', 'kd.user_id');
+                        })
+                        ->where('kd.idno',$request->id)
+                        ->first();
+
+        return view('mark',compact('user_kd'));
     }
 
     public function table(Request $request){
@@ -87,6 +102,9 @@ class PengajarController extends Controller
         switch($request->action){
             case 'save_kelas_detail':
                 $this->save_kelas_detail($request);
+                break;
+            case 'mark_kd':
+                $this->mark_kd($request);
                 break;
             default:
                 return 'error happen..';
@@ -162,47 +180,29 @@ class PengajarController extends Controller
 
     }
 
-    public function save_kelas_detail(Request $request){
+    public function mark_kd(Request $request){
         DB::beginTransaction();
         try {
             
             $kelas_detail = DB::table('kelas_detail')
-                                ->where('kelas_id',$request->kelas_id)
-                                ->where('user_id',$request->user_id)
-                                ->where('jadual_id',$request->jadual_id)
-                                ->where('type',$request->type)
-                                ->where('date',$request->date)
-                                ->where('time',$request->time);
+                                ->where('idno',$request->idno);
 
             if($kelas_detail->exists()){
-                dd('ada');
-                // if($request->status == 'cancel'){
-                //     DB::table('kelas_detail')
-                //         ->where('kelas_id',$request->kelas_id)
-                //         ->where('user_id',$request->user_id)
-                //         ->where('jadual_id',$request->jadual_id)
-                //         ->where('type',$request->type)
-                //         ->where('date',$request->date)
-                //         ->where('time',$request->time)
-                //         ->delete();
-                // }
+                DB::table('kelas_detail')
+                    ->where('idno',$request->idno)
+                    ->update([
+                        'remark' => $request->remark,
+                        'rating' => $request->rating,
+                        'ms2' => $request->ms2,
+                        'surah2' => $request->surah2,
+                        'marked' => 1,
+                    ]);
             }else{
-                // DB::table('kelas_detail')
-                //     ->insert([
-                //         'kelas_id' => $request->kelas_id,
-                //         'user_id' => $request->user_id,
-                //         'jadual_id' => $request->jadual_id,
-                //         'type' => $request->type,
-                //         'date' => $request->date,
-                //         'time' => $request->time,
-                //         'status' => 'confirm',
-                //         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                //         'adduser' => session('username')
-                //     ]);
+                dd('x ada');
             }
             
 
-            // DB::commit();
+            DB::commit();
             
             $responce = new stdClass();
             $responce->operation = 'SUCCESS';

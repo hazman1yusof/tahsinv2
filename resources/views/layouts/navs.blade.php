@@ -14,15 +14,19 @@
 
 <div class="ui sidebar inverted vertical menu sidemenu">
     <a class="item @if(Request::is('dashboard')) {{'active'}} @endif" href="{{ url('/dashboard')}}"><i style="float: left" class="big home icon"></i>Dashboard</a>
-    <a class="item @if(Request::is('kelas')) {{'active'}} @endif" href="{{ url('/kelas')}}"><i style="float: left" class="big chalkboard teacher icon"></i>Jadual Saya</a>
+    <a class="item @if(Request::is('kelas') || Request::is('kelas_detail')) {{'active'}} @endif" href="{{ url('/kelas')}}"><i style="float: left" class="big chalkboard teacher icon"></i>Jadual Saya</a>
+     @if(Auth::user()->ajar == 1)
     <div class="item">
          <div class="header">Pengajar </div>
-        <a class="item @if(Request::is('pengajar')){{'active'}} @endif" href="{{ url('/pengajar')}}"><i style="float: left" class="big user graduate icon"></i>Jadual Pengajar </a>
+        <a class="item @if(Request::is('pengajar') || Request::is('pengajar_detail') || Request::is('mark')){{'active'}} @endif" href="{{ url('/pengajar')}}"><i style="float: left" class="big user graduate icon"></i>Jadual Pengajar </a>
     </div>
+    @endif
+    @if(Auth::user()->setup == 1)
     <div class="item">
          <div class="header">Setup </div>
         <a class="item @if(Request::is('setup_user')){{'active'}} @endif" href="{{ url('/setup_user')}}"><i style="float: left" class="big users icon"></i>Setup Pelajar</a>
         <a class="item @if(Request::is('setup_kelas')){{'active'}} @endif" href="{{ url('/setup_kelas')}}"><i style="float: left" class="big chalkboard icon"></i>Setup Kelas</a>
         <a class="item @if(Request::is('setup_jadual')){{'active'}} @endif" href="{{ url('/setup_jadual')}}"><i style="float: left" class="big chalkboard teacher icon"></i>Setup Jadual</a>
     </div>
+    @endif
 </div>

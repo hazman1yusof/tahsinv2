@@ -32,5 +32,6 @@ Route::get('/kelas/table','KelasController@table');
 
 Route::get('/pengajar','PengajarController@pengajar');
 Route::get('/pengajar_detail','PengajarController@pengajar_detail');
+Route::get('/mark','PengajarController@mark');
 Route::post('/pengajar/form','PengajarController@form');
 Route::get('/pengajar/table','PengajarController@table');

@@ -1,42 +1,8 @@
 var currrow=null;
 
-var dt_kelas_detail = $('#dt_kelas_detail').DataTable({
-	ajax: {
-	    url: "./pengajar/table",
-	   	data: {
-	        action: 'getkelasdetail',
-	        kelas_id: kelas_detail.kelas_id,
-	        jadual_id: kelas_detail.jadual_id,
-	        type: kelas_detail.type,
-	        date: kelas_detail.date,
-	        time: kelas_detail.time
-		},
-	},
- 	dom: '<f<"datablediv"t>p>',
-	columns: [
-        {'data': 'name'},
-        {'data': 'surah'},
-        {'data': 'ms'},
-        {'data': 'status'}
-    ],
-    columnDefs: [
-    	
-	],
-	drawCallback: function( settings ) {
-    	// $(this).find('tbody tr')[0].click();
-    }
-});
-
 $(document).ready(function() {
-	$('#dt_kelas_detail tbody').on('click','tr',function(){
-		currrow = dt_kelas_detail.row( this ).data();
-		if($(this).hasClass('blue')){
-			openmodal('edit');
-		}else{
-			DataTable.$('tr.blue').removeClass('blue');
-			$(this).addClass('blue');
-		}
-
+	$('div.item.myitem.hadir').click(function(){
+		window.location.href = $(this).data('url');
 	});
 });
 
@@ -87,5 +53,5 @@ function save_kelas_detail(oper){
 }
 
 function after_save(){
-	dt_kelas_detail.ajax.reload();
+	// dt_kelas_detail.ajax.reload();
 }
