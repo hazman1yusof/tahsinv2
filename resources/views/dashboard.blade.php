@@ -1,6 +1,6 @@
 @extends('layouts.fomantic_main')
 
-@section('title', 'Setup User')
+@section('title', 'Dashboard')
 
 @section('style')
     
@@ -14,7 +14,193 @@
 @endsection
 
 @section('content')
+    <div class="ui container mycontainer">
 
+        <img src="./img/fancyline1.png" class="segment_line">
+        <div class="ui segments" style="border-color: darkgoldenrod;margin-top: -10px;">
+            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #fff8ee;">
+                <h4 style="margin-bottom: 5px;">Maklumat Pelajar</h4>
+                <i class="plus square icon hide_but" id="btnhid_userdtl"></i>
+            </div>
+            <div class="ui segment " style="display:none" id="sgmnt_userdtl">
+              <div class="ui centered grid" >
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Username</span><span class="col_cont">{{$user_detail->username}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Name</span><span class="col_cont">{{$user_detail->name}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">User Type</span><span class="col_cont">{{$user_detail->type}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Kelas</span><span class="col_cont">{{$user_detail->kelas_name}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Address</span><span class="col_cont">{{$user_detail->address}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Handphone</span><span class="col_cont">{{$user_detail->telhp}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">I/C</span><span class="col_cont">{{$user_detail->newic}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">DOB</span><span class="col_cont">{{$user_detail->dob}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Gender</span><span class="col_cont">{{$user_detail->gender}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Age</span><span class="col_cont">{{$user_detail->dob}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Last Surah</span><span class="col_cont">{{$user_detail->last_surah}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Last M/S</span><span class="col_cont">{{$user_detail->last_ms}}</span></div>
+             </div>
+            </div>
+        </div>
+
+        <img src="./img/fancyline1.png" class="segment_line">
+        <div class="ui segments" style="border-color: #e300c9;margin-top: -10px;">
+            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #ffeafd;">
+                <h4 style="margin-bottom: 5px;">Tatacara dan Adab semasa hadir ke Tadarus Al-Quran</h4>
+                <i class="plus square icon hide_but" id="btnhid_prtkls"></i>
+            </div>
+            <div class="ui segment " style="display:none" id="sgmnt_prtkls">
+                <div class="ui ordered list">
+                    <a class="item">Buat latihan bacaan masing2 sebelum masuk ke kelas.</a>
+                    <a class="item">Pastikan update kehadiran (hadir/tidak) dengan mengemaskini nama dan mukasurat selewatnya sehari sebelum kelas.</a>
+                    <a class="item">Join GM selewat²nya 5 minit sebelum kelas bermula.</a>
+                    <a class="item">Berpakaian sopan dan menutup aurat.</a>
+                    <a class="item">Buka kamera terutama semasa mengaji.</a>
+                    <a class="item">Jangan left sebelum tamat kelas, ikuti dan semak bacaan rakan2 yang lain.</a>
+                    <a class="item">Jika uzur, digalakkan hadir kelas sebagai pendengar.</a>
+                    <a class="item">Untuk Program Talaqqi, mohon muka mic dan ikut bacaan bersama-sama.</a>
+                </div>
+             </div>
+        </div>
+
+        <img src="./img/fancyline1.png" class="segment_line">
+        <div class="ui segments" style="border-color: #6a9ba5;margin-top: -10px;">
+            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #e1faff;">
+                <h4 style="margin-bottom: 5px;">Kelas sebelum ini</h4>
+                <i class="plus square icon hide_but" id="btnhid_klsb4"></i>
+            </div>
+            <div class="ui segment " style="display:none" id="sgmnt_klsb4">
+                <table >
+                    <tr>
+                        <th>Kelas</th>
+                        <td>{{$jadual->name}}</td>
+                    <tr>
+                    <tr>
+                        <th>Jadual</th>
+                        <td>{{$jadual->title}}</td>
+                    <tr>
+                    <tr>
+                        <th>Tarikh</th>
+                        <td>{{Carbon\Carbon::createFromFormat('Y-m-d',$date_b4)->format('d-m-Y')}}</td>
+                    <tr>
+                    <tr>
+                        <th>Masa</th>
+                        <td>{{Carbon\Carbon::createFromFormat('H:i:s',$jadual->time)->format('g:i A')}}</td>
+                    <tr>
+                </table>
+                <div class="ui grid div_past_marked" style="display:none">
+                  <div class="four wide column" style="padding: 15px 1px 15px 15px;">
+                      <label>Giliran</label>
+                      <select id="pos" name="pos" required>
+                      </select>
+                  </div>
+                  <div class="six wide column" style="padding: 15px 1px;">
+                      <label>Muka Surat</label>
+                      <div class="ui fluid input">
+                        <input type="number" placeholder="Muka Surat" name="surah" id="surah" value="@if(!empty($kelas_detail)){{$kelas_detail->surah}}@endif" required>
+                      </div>
+                  </div>
+                  <div class="six wide column" style="padding: 15px 15px 15px 1px;">
+                      <label>No. Ayat</label>
+                      <div class="ui fluid input">
+                        <input type="number" placeholder="No. Ayat" name="ms" id="ms" value="@if(!empty($kelas_detail)){{$kelas_detail->ms}}@endif" required>
+                      </div>
+                  </div>
+                </div>
+             </div>
+        </div>
+
+        <img src="./img/fancyline1.png" class="segment_line">
+        <div class="ui segments" style="border-color: #468740;margin-top: -10px;">
+            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #edffeb;">
+                <h4 style="margin-bottom: 5px;">Kelas selepas ini</h4>
+                <i class="plus square icon hide_but" id="btnhid_klsafter"></i>
+            </div>
+            <div class="ui segment " style="display:none" id="sgmnt_klsafter">
+                <table >
+                    <tr>
+                        <th>Kelas</th>
+                        <td>{{$jadual->name}}</td>
+                    <tr>
+                    <tr>
+                        <th>Jadual</th>
+                        <td>{{$jadual->title}}</td>
+                    <tr>
+                    <tr>
+                        <th>Tarikh</th>
+                        <td>{{Carbon\Carbon::createFromFormat('Y-m-d',$date_after)->format('d-m-Y')}}</td>
+                    <tr>
+                    <tr>
+                        <th>Masa</th>
+                        <td>{{Carbon\Carbon::createFromFormat('H:i:s',$jadual->time)->format('g:i A')}}</td>
+                    <tr>
+                </table>
+                <div class="ui grid div_past_marked" style="">
+                  <div class="four wide column" style="padding: 15px 1px 15px 15px;">
+                      <label>Giliran</label>
+                      <select id="pos" name="pos" required>
+                      </select>
+                  </div>
+                  <div class="six wide column" style="padding: 15px 1px;">
+                      <label>Muka Surat</label>
+                      <div class="ui fluid input">
+                        <input type="number" placeholder="Muka Surat" name="surah" id="surah" value="@if(!empty($kelas_detail)){{$kelas_detail->surah}}@endif" required>
+                      </div>
+                  </div>
+                  <div class="six wide column" style="padding: 15px 15px 15px 1px;">
+                      <label>No. Ayat</label>
+                      <div class="ui fluid input">
+                        <input type="number" placeholder="No. Ayat" name="ms" id="ms" value="@if(!empty($kelas_detail)){{$kelas_detail->ms}}@endif" required>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="ui two buttons div_past_marked" style="">
+                    <div class="ui negative button" id="tak_confirm">Tidak Hadir Kelas</div>
+                    <div class="ui positive button" id="confirm">Hadir Kelas</div>
+                </div>
+
+                <form class="ui form" autocomplete="off"  id="div_marked" style="">
+                    <div class="ui yellow segment" style="margin-top:10px">
+                        <div class="field">
+                          <label>Nota Dari Ustaz</label>
+                          <textarea name="remark" id="remark" readonly>@if(!empty($kelas_detail)){{$kelas_detail->remark}}@endif</textarea>
+                        </div>
+
+                        <div class="field">
+                          <label>Rating Pengajian</label>
+                          <div id="rating" class="ui olive rating" data-icon="quran" data-rating="@if(!empty($kelas_detail)){{$kelas_detail->rating}}@endif" data-max-rating="5"></div>
+                        </div>
+                    </div>
+                    <div class="ui segment tertiary inverted green msgreen">
+                          <a class="ui green ribbon label">Muka Surat Selepas Sesi Pengajian</a>
+                          <div class="ui two column grid">
+                            <div class="left attached column field" style="padding-right:2px;padding-bottom: 2px;">
+                                  <label style="text-align: center">Muka Surat</label>
+                                <div class="ui fluid input">
+                                  <input class="inp_trans" type="number" placeholder="Muka Surat" name="surah2" id="surah2" value="@if(!empty($kelas_detail)){{$kelas_detail->surah2}}@endif" readonly>
+                                </div>
+                            </div>
+                            <div class="right attached column field" style="padding-left:2px;padding-bottom: 2px;">
+                                  <label style="text-align: center">No. Ayat</label>
+                                <div class="ui fluid input">
+                                  <input class="inp_trans" type="number" placeholder="No. Ayat" name="ms2" id="ms2" value="@if(!empty($kelas_detail)){{$kelas_detail->ms2}}@endif" readonly>
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <img src="./img/fancyline1.png" class="segment_line">
+        <div class="ui segments" style="border-color: #910030;margin-top: -10px;">
+            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #ffedf3;">
+                <h4 style="margin-bottom: 5px;">Bantuan Naqib</h4>
+                <i class="plus square icon hide_but" id="btnhid_naqib"></i>
+            </div>
+            <div class="ui segment " style="display:none" id="sgmnt_naqib">
+             </div>
+        </div>
+
+    </div>
 @endsection
 
 @section('css')

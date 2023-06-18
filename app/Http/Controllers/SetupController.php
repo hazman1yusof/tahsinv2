@@ -80,7 +80,7 @@ class SetupController extends Controller
 
     public function getuser(Request $request){
         $users = DB::table('users as u')
-                    ->select('u.id','u.username','u.password','u.name','u.kelas','u.type','u.ajar','u.setup','u.telhp','u.address1','u.address2','u.address3','u.telno','u.postcode','u.newic','u.image','u.adduser','u.adddate','u.upduser','u.upddate','u.last_surah','u.last_ms','k.name as kelas_name')
+                    ->select('u.id','u.username','u.password','u.name','u.kelas','u.type','u.ajar','u.setup','u.telhp','u.address','u.telno','u.postcode','u.newic','u.image','u.adduser','u.adddate','u.upduser','u.upddate','u.last_surah','u.last_ms','k.name as kelas_name')
                     ->leftJoin('kelas as k', function($join) use ($request){
                         $join = $join->on('k.idno', '=', 'u.kelas');
                     })->get();

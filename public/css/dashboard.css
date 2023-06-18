@@ -1,0 +1,31 @@
+.segment_line{
+	position: relative;
+    z-index: 5;
+    width: 100px;
+    object-fit: contain;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -10px;
+}
+.col_{position: relative;padding: 8px !important;}
+.col_cont{    
+	min-height: 42px;
+	display: block;
+    text-align: center;
+    border: 1px solid #ffc373;
+    padding: 10px 2px;
+    border-radius: 5px;
+}
+.col_titl{
+	display: block;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 0px 5px 15px #767676;
+}
+.hide_but{
+	position: absolute;
+    top: 5px;
+    right: 1px;
+    cursor: pointer;
+}

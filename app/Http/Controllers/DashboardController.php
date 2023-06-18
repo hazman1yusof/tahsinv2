@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use stdClass;
 use DB;
 use Carbon\Carbon;
+use Auth;
 
 class DashboardController extends Controller
 {   
@@ -13,11 +14,58 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-    }
+    }   
+
 
     public function dashboard(Request $request){
+            $kelas_id = Auth::user()->kelas;
+            $jadual = DB::table('jadual as j')
+                        ->select('j.idno','j.kelas_id','j.title','j.type','j.hari','j.date','j.time','k.name')
+                        ->leftJoin('kelas as k', function($join) use ($request){
+                                $join = $join->on('k.idno', '=', 'j.kelas_id');
+                        })
+                        ->where('kelas_id',$kelas_id)
+                        ->where('type','weekly')
+                        ->first();
 
-        return view('dashboard');
+            $date_b4 = Carbon::parse("last ".$jadual->hari)->format('Y-m-d');
+            $kd_b4 = DB::table('kelas_detail')
+                        ->where('kelas_id',$kelas_id)
+                        ->where('user_id',Auth::user()->id)
+                        ->where('jadual_id',$jadual->idno)
+                        ->where('type','weekly')
+                        ->where('date',$date_b4)
+                        ->where('time',$jadual->time);
+
+            if($kd_b4->exists()){
+                $kd_b4 = $kd_b4->first();
+            }else{
+                $kd_b4 = null;
+            }
+
+            $date_after = Carbon::parse("next ".$jadual->hari)->format('Y-m-d');
+            $kd_after = DB::table('kelas_detail')
+                        ->where('kelas_id',$kelas_id)
+                        ->where('user_id',Auth::user()->id)
+                        ->where('jadual_id',$jadual->idno)
+                        ->where('type','weekly')
+                        ->where('date',$date_after)
+                        ->where('time',$jadual->time);
+
+            if($kd_after->exists()){
+                $kd_after = $kd_after->first();
+            }else{
+                $kd_after = null;
+            }
+
+            $user_detail = DB::table('users as u')
+                        ->select('u.id','u.username','u.password','u.name','u.kelas','u.type','u.ajar','u.setup','u.telhp','u.address','u.telno','u.postcode','u.newic','u.image','u.adduser','u.adddate','u.upduser','u.upddate','u.dob','u.gender','u.last_surah','u.last_ms', 'k.name as kelas_name')
+                        ->leftJoin('kelas as k', function($join) use ($request){
+                                $join = $join->on('k.idno', '=', 'u.kelas');
+                        })
+                        ->where('u.id',Auth::user()->id)
+                        ->first();
+        return view('dashboard',compact('user_detail','kd_b4','date_b4','kd_after','date_after','jadual'));
     }
 
     public function table(Request $request){
