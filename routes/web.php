@@ -18,6 +18,8 @@ Route::get('/logout','SessionController@destroy');
 
 Route::get('/','DashboardController@dashboard');
 Route::get('/dashboard','DashboardController@dashboard');
+Route::get('/upd_user','DashboardController@upd_user')->name('upd_user');
+Route::post('/upd_user','DashboardController@upd_user_post');
 
 Route::get('/setup_user','SetupController@setup_user');
 Route::get('/setup_kelas','SetupController@setup_kelas');

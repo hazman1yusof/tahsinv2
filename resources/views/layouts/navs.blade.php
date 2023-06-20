@@ -5,7 +5,7 @@
         <div class="ui simple dropdown item" style="padding: 13px 0px !important;">
         <span class="himsg">{{Auth::user()->username}}<i class="dropdown icon"></i></span>
           <div class="menu">
-            <a class="item"><i class="edit icon"></i>Change Password</a>
+            <a class="item" href="./upd_user"><i class="edit icon"></i>Update My Data</a>
             <a class="item" href="./logout"><i class="sign out alternate icon"></i>Log Out</a>
           </div>
         </div>

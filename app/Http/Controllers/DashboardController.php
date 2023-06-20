@@ -52,6 +52,23 @@ class DashboardController extends Controller
                         ->where('date',$date_after)
                         ->where('time',$jadual->time);
 
+            $count_kelas = DB::table('users')
+                            ->where('kelas',$request->kelas_id)
+                            ->count();
+
+            $user_kd = DB::table('kelas_detail as kd')
+                        ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
+                        ->leftJoin('users as u', function($join) use ($request){
+                                $join = $join->on('u.id', '=', 'kd.user_id');
+                        })
+                        ->where('kd.kelas_id',$kelas_id)
+                        ->where('kd.jadual_id',$jadual->idno)
+                        ->where('kd.type','weekly')
+                        ->where('kd.date',$date_after)
+                        ->where('kd.time',$jadual->time)
+                        ->orderBy('kd.pos', 'asc')
+                        ->get();
+
             if($kd_after->exists()){
                 $kd_after = $kd_after->first();
             }else{
@@ -65,7 +82,37 @@ class DashboardController extends Controller
                         })
                         ->where('u.id',Auth::user()->id)
                         ->first();
-        return view('dashboard',compact('user_detail','kd_b4','date_b4','kd_after','date_after','jadual'));
+        return view('dashboard',compact('user_detail','kd_b4','date_b4','kd_after','date_after','jadual','count_kelas','user_kd'));
+    }
+
+    public function upd_user(Request $request){
+        $user_detail = DB::table('users as u')
+                    ->select('u.id','u.username','u.password','u.name','u.kelas','u.type','u.ajar','u.setup','u.telhp','u.address','u.telno','u.postcode','u.newic','u.image','u.adduser','u.adddate','u.upduser','u.upddate','u.dob','u.gender','u.last_surah','u.last_ms', 'k.name as kelas_name')
+                    ->leftJoin('kelas as k', function($join) use ($request){
+                            $join = $join->on('k.idno', '=', 'u.kelas');
+                    })
+                    ->where('u.id',Auth::user()->id)
+                    ->first();
+
+        return view('upd_user',compact('user_detail'));
+    }
+
+    public function upd_user_post(Request $request){
+        DB::table('users')
+                ->where('id',Auth::user()->id)
+                ->update([
+                    'password' => $request->password,
+                    'name' => $request->name,
+                    'telhp' => $request->telhp,
+                    'newic' => $request->newic,
+                    'address' => $request->address,
+                    'dob' => $request->dob,
+                    'gender' => $request->gender,
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+        return redirect()->route('upd_user');
     }
 
     public function table(Request $request){

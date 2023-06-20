@@ -1,6 +1,6 @@
 @extends('layouts.fomantic_main')
 
-@section('title', 'Kelas')
+@section('title', 'Pengajar')
 
 @section('stylesheet')
 @endsection

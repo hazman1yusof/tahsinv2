@@ -10,3 +10,35 @@ div#dt_user_filter label, div#dt_user_filter button,div#dt_kelas_filter label, d
 table td.center{
 	text-align: center !important;
 }
+.col_{position: relative;padding: 8px !important;}
+span.col_cont{    
+	min-height: 42px;
+	display: block;
+    text-align: center;
+    border: 1px solid #ffc373;
+    padding: 10px 2px;
+    border-radius: 5px;
+    width: 100%;
+}
+input.col_cont,textarea.col_cont,select.col_cont{    
+	min-height: 42px;
+	display: block;
+    text-align: center;
+    border: 1px solid #ffc373;
+    padding: 10px 2px;
+    border-radius: 5px;
+    width: 100%;
+    background: #ffffe2;
+}
+.col_titl{
+	display: block;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 0px 5px 15px #767676;
+}
+button.myback{
+    position: absolute !important;
+    left: 10px !important;
+    background: none !important;
+    top: 2px !important;
+}

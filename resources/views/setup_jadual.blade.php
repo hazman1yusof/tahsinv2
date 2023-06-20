@@ -1,6 +1,6 @@
 @extends('layouts.fomantic_main')
 
-@section('title', 'Setup Kelas')
+@section('title', 'Setup Jadual')
 
 @section('style')
     

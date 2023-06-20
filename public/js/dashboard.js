@@ -1,3 +1,13 @@
+if(my_marked==1){
+	$('.div_past_marked').hide();
+}else{
+	$('.div_past_marked').show();
+}
+
+if(my_marked == 1){
+	$('#div_marked').show();
+}
+
 $(document).ready(function () {
 	$('#btnhid_userdtl').click(function(){
 		if($(this).hasClass('plus')){
@@ -44,4 +54,19 @@ $(document).ready(function () {
 			$(this).removeClass('minus').addClass('plus');
 		}
 	});
+
+	init();
 });
+
+function init(){
+	for (let i = 1; i <= count_kelas; i++) {
+		if(!user_kd.includes(i)){
+	  		$('select#pos').append(`<option value='`+i+`'>`+i+`</option>`);
+		}
+	}
+	if(my_pos != null){
+		$('select#pos').val(my_pos);
+	}
+
+	$('#rating').rating('disable');
+}

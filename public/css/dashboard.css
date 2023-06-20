@@ -29,3 +29,67 @@
     right: 1px;
     cursor: pointer;
 }
+div.user_kd{
+    max-height: 40vh;
+    overflow-y: scroll;
+}
+div.myitem{
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px 1px;
+    margin: 2px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+div.myitem.hadir{
+    background: #d9fad7;
+}
+div.myitem.xhadir{
+    background: #fad7d7;
+}
+div.myitem > .grid{
+    margin: 0px !important;
+}
+div.pos{
+    font-size: 12px;
+    font-weight: bold;
+    float: left;
+    font-weight: bold;
+    border-right: 1px solid #d98e06;
+    padding: 0px 1px !important;
+}
+div.ms{
+    font-size: 12px;
+    font-weight: bold;
+    border-left: 1px solid #d98e06;
+    padding: 0px 5px !important;
+}
+div.msblue{
+    padding: 5px 15px !important;
+    background-color: #aedcff !important;
+    border: 1px solid #2185d0 !important;
+    color: #fff !important;
+}
+div.msgreen{
+    padding: 5px 15px !important;
+    background-color: #c2ffd1 !important;
+    border: 1px solid #21ba45 !important;
+    color: #fff !important;
+}
+div.name{
+    font-size: 12px;
+    word-wrap: break-word;
+    padding: 0px 5px !important;
+}
+div.myflabel{
+    font-size: 10px !important;padding: 3px !important;top: -2px !important;
+}
+i.myficon{
+    margin:0px !important;
+}
+div.mytlabel{
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}

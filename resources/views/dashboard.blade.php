@@ -9,6 +9,16 @@
 @section('header')
 <script>
 
+    var count_kelas = {{$count_kelas}};
+    var my_pos = @if(!empty($kd_after)){{$kd_after->pos}}@else{{'null'}}@endif;
+    var user_kd = [
+        @foreach ($user_kd as $user)
+            @if($user->user_id != Auth::user()->id)
+            {{$user->pos}},
+            @endif
+        @endforeach
+    ];
+    var my_marked = @if(!empty($kd_after)){{$kd_after->marked}}@else{{'0'}}@endif;
     
 </script>
 @endsection
@@ -23,6 +33,11 @@
                 <i class="plus square icon hide_but" id="btnhid_userdtl"></i>
             </div>
             <div class="ui segment " style="display:none" id="sgmnt_userdtl">
+              <a id="upd_user" class="ui fluid tiny teal button" style="margin-bottom: 10px;
+                margin-top: -14px;
+                padding: 5px;
+                border-top-right-radius: 0px;
+                border-top-left-radius: 0px;" href="./upd_user">Update My Data</a>
               <div class="ui centered grid" >
                 <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Username</span><span class="col_cont">{{$user_detail->username}}</span></div>
                 <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Name</span><span class="col_cont">{{$user_detail->name}}</span></div>
@@ -34,8 +49,6 @@
                 <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">DOB</span><span class="col_cont">{{$user_detail->dob}}</span></div>
                 <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Gender</span><span class="col_cont">{{$user_detail->gender}}</span></div>
                 <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Age</span><span class="col_cont">{{$user_detail->dob}}</span></div>
-                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Last Surah</span><span class="col_cont">{{$user_detail->last_surah}}</span></div>
-                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Last M/S</span><span class="col_cont">{{$user_detail->last_ms}}</span></div>
              </div>
             </div>
         </div>
@@ -85,25 +98,6 @@
                         <td>{{Carbon\Carbon::createFromFormat('H:i:s',$jadual->time)->format('g:i A')}}</td>
                     <tr>
                 </table>
-                <div class="ui grid div_past_marked" style="display:none">
-                  <div class="four wide column" style="padding: 15px 1px 15px 15px;">
-                      <label>Giliran</label>
-                      <select id="pos" name="pos" required>
-                      </select>
-                  </div>
-                  <div class="six wide column" style="padding: 15px 1px;">
-                      <label>Muka Surat</label>
-                      <div class="ui fluid input">
-                        <input type="number" placeholder="Muka Surat" name="surah" id="surah" value="@if(!empty($kelas_detail)){{$kelas_detail->surah}}@endif" required>
-                      </div>
-                  </div>
-                  <div class="six wide column" style="padding: 15px 15px 15px 1px;">
-                      <label>No. Ayat</label>
-                      <div class="ui fluid input">
-                        <input type="number" placeholder="No. Ayat" name="ms" id="ms" value="@if(!empty($kelas_detail)){{$kelas_detail->ms}}@endif" required>
-                      </div>
-                  </div>
-                </div>
              </div>
         </div>
 
@@ -114,59 +108,100 @@
                 <i class="plus square icon hide_but" id="btnhid_klsafter"></i>
             </div>
             <div class="ui segment " style="display:none" id="sgmnt_klsafter">
-                <table >
-                    <tr>
-                        <th>Kelas</th>
-                        <td>{{$jadual->name}}</td>
-                    <tr>
-                    <tr>
-                        <th>Jadual</th>
-                        <td>{{$jadual->title}}</td>
-                    <tr>
-                    <tr>
-                        <th>Tarikh</th>
-                        <td>{{Carbon\Carbon::createFromFormat('Y-m-d',$date_after)->format('d-m-Y')}}</td>
-                    <tr>
-                    <tr>
-                        <th>Masa</th>
-                        <td>{{Carbon\Carbon::createFromFormat('H:i:s',$jadual->time)->format('g:i A')}}</td>
-                    <tr>
-                </table>
-                <div class="ui grid div_past_marked" style="">
-                  <div class="four wide column" style="padding: 15px 1px 15px 15px;">
-                      <label>Giliran</label>
-                      <select id="pos" name="pos" required>
-                      </select>
-                  </div>
-                  <div class="six wide column" style="padding: 15px 1px;">
-                      <label>Muka Surat</label>
-                      <div class="ui fluid input">
-                        <input type="number" placeholder="Muka Surat" name="surah" id="surah" value="@if(!empty($kelas_detail)){{$kelas_detail->surah}}@endif" required>
-                      </div>
-                  </div>
-                  <div class="six wide column" style="padding: 15px 15px 15px 1px;">
-                      <label>No. Ayat</label>
-                      <div class="ui fluid input">
-                        <input type="number" placeholder="No. Ayat" name="ms" id="ms" value="@if(!empty($kelas_detail)){{$kelas_detail->ms}}@endif" required>
-                      </div>
-                  </div>
-                </div>
 
-                <div class="ui two buttons div_past_marked" style="">
-                    <div class="ui negative button" id="tak_confirm">Tidak Hadir Kelas</div>
-                    <div class="ui positive button" id="confirm">Hadir Kelas</div>
-                </div>
+                <form class="ui form" id="form_nonpast" autocomplete="off">
+                    <h5 class="ui top attached negative message" id="div_error" style="display:none;">
+                      <i class="warning icon"></i><span id="span_error"></span>
+                    </h5>
+                    <div class="ui segment blue user_kd">
+                     <p><b>Pelajar Hadir:</b>
+                        <div class="ui yellow label mytlabel" style="float:right">
+                          <i class="checkmark icon"></i>
+                          Marked
+                        </div>
+                     </p>
+                      @foreach ($user_kd as $user)
+                        @if($user->status == 'Hadir')
+                          <div class="item myitem hadir">
+                            @if($user->marked == '1')
+                            <div class="floating ui yellow label myflabel"><i class="checkmark icon myficon"></i></div>
+                            @endif
+                            <div class="ui grid">
+                              <div class="one wide column pos">{{$user->pos}}</div>
+                              <div class="twelve wide column name">{{$user->name}}</div>
+                              <div class="three wide column ms">{{$user->surah}}:{{$user->ms}}</div>
+                            </div>
+                          </div>
+                          @endif
+                      @endforeach
+
+                      <p><b>Pelajar Tidak Hadir:</b></p>
+                      @foreach ($user_kd as $user)
+                        @if($user->status == 'Tidak Hadir')
+                          <div class="item myitem xhadir">
+                            <div class="ui grid">
+                              <div class="one wide column pos">{{$user->pos}}</div>
+                              <div class="twelve wide column name">{{$user->name}}</div>
+                              <div class="three wide column ms">{{$user->surah}}:{{$user->ms}}</div>
+                            </div>
+                          </div>
+                          @endif
+                      @endforeach
+                    </div>
+                    <table >
+                        <tr>
+                            <th>Kelas</th>
+                            <td>{{$jadual->name}}</td>
+                        <tr>
+                        <tr>
+                            <th>Jadual</th>
+                            <td>{{$jadual->title}}</td>
+                        <tr>
+                        <tr>
+                            <th>Tarikh</th>
+                            <td>{{Carbon\Carbon::createFromFormat('Y-m-d',$date_after)->format('d-m-Y')}}</td>
+                        <tr>
+                        <tr>
+                            <th>Masa</th>
+                            <td>{{Carbon\Carbon::createFromFormat('H:i:s',$jadual->time)->format('g:i A')}}</td>
+                        <tr>
+                    </table>
+                    <div class="ui grid div_past_marked" style="">
+                      <div class="four wide column" style="padding: 15px 1px 15px 15px;">
+                          <label>Giliran</label>
+                          <select id="pos" name="pos" required>
+                            <option value="">Giliran</option>
+                          </select>
+                      </div>
+                      <div class="six wide column" style="padding: 15px 1px;">
+                          <label>Muka Surat</label>
+                          <div class="ui fluid input">
+                            <input type="number" placeholder="Muka Surat" name="surah" id="surah" value="@if(!empty($kd_after)){{$kd_after->surah}}@endif" required>
+                          </div>
+                      </div>
+                      <div class="six wide column" style="padding: 15px 15px 15px 1px;">
+                          <label>No. Ayat</label>
+                          <div class="ui fluid input">
+                            <input type="number" placeholder="No. Ayat" name="ms" id="ms" value="@if(!empty($kd_after)){{$kd_after->ms}}@endif" required>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="ui two buttons div_past_marked" style="">
+                        <div class="ui negative button" id="tak_confirm">Tidak Hadir Kelas</div>
+                        <div class="ui positive button" id="confirm">Hadir Kelas</div>
+                    </div>
+                </form>
 
                 <form class="ui form" autocomplete="off"  id="div_marked" style="">
                     <div class="ui yellow segment" style="margin-top:10px">
                         <div class="field">
                           <label>Nota Dari Ustaz</label>
-                          <textarea name="remark" id="remark" readonly>@if(!empty($kelas_detail)){{$kelas_detail->remark}}@endif</textarea>
+                          <textarea name="remark" id="remark" readonly>@if(!empty($kd_after)){{$kd_after->remark}}@endif</textarea>
                         </div>
 
                         <div class="field">
                           <label>Rating Pengajian</label>
-                          <div id="rating" class="ui olive rating" data-icon="quran" data-rating="@if(!empty($kelas_detail)){{$kelas_detail->rating}}@endif" data-max-rating="5"></div>
+                          <div id="rating" class="ui olive rating" data-icon="quran" data-rating="@if(!empty($kd_after)){{$kd_after->rating}}@endif" data-max-rating="5"></div>
                         </div>
                     </div>
                     <div class="ui segment tertiary inverted green msgreen">
@@ -175,13 +210,13 @@
                             <div class="left attached column field" style="padding-right:2px;padding-bottom: 2px;">
                                   <label style="text-align: center">Muka Surat</label>
                                 <div class="ui fluid input">
-                                  <input class="inp_trans" type="number" placeholder="Muka Surat" name="surah2" id="surah2" value="@if(!empty($kelas_detail)){{$kelas_detail->surah2}}@endif" readonly>
+                                  <input class="inp_trans" type="number" placeholder="Muka Surat" name="surah2" id="surah2" value="@if(!empty($kd_after)){{$kd_after->surah2}}@endif" readonly>
                                 </div>
                             </div>
                             <div class="right attached column field" style="padding-left:2px;padding-bottom: 2px;">
                                   <label style="text-align: center">No. Ayat</label>
                                 <div class="ui fluid input">
-                                  <input class="inp_trans" type="number" placeholder="No. Ayat" name="ms2" id="ms2" value="@if(!empty($kelas_detail)){{$kelas_detail->ms2}}@endif" readonly>
+                                  <input class="inp_trans" type="number" placeholder="No. Ayat" name="ms2" id="ms2" value="@if(!empty($kd_after)){{$kd_after->ms2}}@endif" readonly>
                                 </div>
                             </div>
                           </div>
