@@ -1,5 +1,5 @@
 /*
-SQLyog Community v12.5.0 (32 bit)
+SQLyog Enterprise v13.1.1 (64 bit)
 MySQL - 5.7.24 : Database - tahsin
 *********************************************************************
 */
@@ -123,7 +123,7 @@ insert  into `kelas_detail`(`idno`,`kelas_id`,`user_id`,`jadual_id`,`type`,`date
 (17,1,9,1,'weekly','2023-06-24','22:00:00','Hadir',7,'2023-06-18 02:46:39','wan.faiz',NULL,NULL,'65','65','sdsd',3,'5','8',1),
 (18,1,10,1,'weekly','2023-06-24','22:00:00','Hadir',4,'2023-06-18 02:47:04','faedzah',NULL,NULL,'45','45','888',4,'8','8',1),
 (19,1,10,1,'weekly','2023-07-01','22:00:00','Tidak Hadir',0,'2023-06-18 02:50:57','faedzah',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0),
-(20,1,3,1,'weekly','2023-07-08','22:00:00','Tidak Hadir',0,'2023-06-18 05:45:52','Hazman',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0),
+(20,1,3,1,'weekly','2023-07-08','22:00:00','Tidak Hadir',0,'2023-06-18 05:45:52','Hazman',NULL,NULL,'34','34',NULL,NULL,NULL,NULL,0),
 (21,1,3,1,'weekly','2023-07-01','22:00:00','Hadir',1,'2023-06-18 06:12:23','hazman',NULL,NULL,'89','88','ewrr34df',4,'34','34',1),
 (22,1,3,1,'weekly','2023-07-15','22:00:00','Hadir',1,'2023-06-18 06:52:44','hazman',NULL,NULL,'454','45',NULL,NULL,NULL,NULL,0);
 
@@ -167,7 +167,7 @@ CREATE TABLE `users` (
   `telno` varchar(333) DEFAULT NULL,
   `postcode` varchar(333) DEFAULT NULL,
   `newic` varchar(333) DEFAULT NULL,
-  `dob` varchar(333) DEFAULT NULL,
+  `dob` date DEFAULT NULL,
   `gender` varchar(333) DEFAULT NULL,
   `image` blob,
   `adduser` varchar(333) DEFAULT NULL,
@@ -184,7 +184,7 @@ CREATE TABLE `users` (
 insert  into `users`(`id`,`username`,`password`,`name`,`kelas`,`type`,`ajar`,`setup`,`telhp`,`address`,`telno`,`postcode`,`newic`,`dob`,`gender`,`image`,`adduser`,`adddate`,`upduser`,`upddate`,`last_surah`,`last_ms`) values 
 (1,'azila','azila','NOR AZILA MOHD NOOR','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'hazman','2023-06-10 01:27:33',NULL,NULL),
 (2,'nadiyah','nadiyah','NURUL NADIYAH BT HAMID','1','ketua_pelajar','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:28:11',NULL,NULL),
-(3,'hazman','hazman','HAZMAN B YUSOF','1',NULL,'1','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'hazman','2023-06-10 01:27:42',NULL,NULL),
+(3,'hazman','hazman','HAZMAN B YUSOF','1','pelajar','1','1','01123191948','asdasdsad\r\nsdsd\r\n\r\nds\r\ndssdsdsd',NULL,NULL,'870112435017','2023-06-21','Perempuan',NULL,NULL,NULL,'hazman','2023-06-20 19:35:03',NULL,NULL),
 (4,'amirul','amirul','MUHD AMIRUL B MAT HUSSAIN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:28:24',NULL,NULL),
 (5,'hafiz','hafiz','MUHD HAFIZ BIN ZAABA','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:28:34',NULL,NULL),
 (6,'luqman','luqman','LUQMAN BIN MUHD JAFFRI','1','pelajar','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:28:43',NULL,NULL),
