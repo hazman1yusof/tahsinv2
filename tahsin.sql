@@ -53,8 +53,7 @@ CREATE TABLE `jadual` (
 /*Data for the table `jadual` */
 
 insert  into `jadual`(`idno`,`kelas_id`,`title`,`type`,`hari`,`date`,`time`,`timer`,`adduser`,`adddate`,`upduser`,`upddate`) values 
-(1,'1','Tahsin 6.0','weekly','Saturday',NULL,'22:00:00',7,NULL,NULL,'hazman','2023-06-10 01:32:23'),
-(2,'1','Kelas tambahan','date',NULL,'2023-06-16','22:00:00',7,NULL,NULL,'hazman','2023-06-10 01:33:11');
+(1,'1','Tahsin 6.0','weekly','Saturday',NULL,'22:00:00',7,NULL,NULL,'hazman','2023-06-10 01:32:23');
 
 /*Table structure for table `kelas` */
 
@@ -105,27 +104,12 @@ CREATE TABLE `kelas_detail` (
   `ms2` varchar(11) DEFAULT NULL,
   `marked` int(1) DEFAULT '0',
   PRIMARY KEY (`idno`,`kelas_id`,`user_id`,`jadual_id`,`type`,`date`,`time`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 /*Data for the table `kelas_detail` */
 
 insert  into `kelas_detail`(`idno`,`kelas_id`,`user_id`,`jadual_id`,`type`,`date`,`time`,`status`,`pos`,`adddate`,`adduser`,`upddate`,`upduser`,`surah`,`ms`,`remark`,`rating`,`surah2`,`ms2`,`marked`) values 
-(6,1,3,1,'weekly','2023-06-10','22:00:00','confirm',0,'2023-06-10 03:23:29','hazman','2023-06-10 03:25:14','hazman',NULL,NULL,NULL,NULL,NULL,NULL,0),
-(8,1,3,1,'weekly','2023-06-17','22:00:00','Hadir',4,'2023-06-11 03:06:19','hazman',NULL,NULL,'67','187','dsfdsf',5,'34','34',1),
-(9,1,3,2,'date','2023-06-16','22:00:00','confirm',0,'2023-06-13 22:21:01','hazman',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0),
-(10,1,3,1,'weekly','2023-06-24','22:00:00','Hadir',10,'2023-06-18 01:56:10','hazman',NULL,NULL,'122','23','7888',1,'8','8',1),
-(11,1,2,1,'weekly','2023-06-24','22:00:00','Hadir',1,'2023-06-18 02:13:42','nadiyah',NULL,NULL,'23','23','asdsad',2,'32','23',1),
-(12,1,5,1,'weekly','2023-06-24','22:00:00','Hadir',3,'2023-06-18 02:14:30','hafiz',NULL,NULL,'23','12','Hebat',5,'24','23',1),
-(13,1,11,1,'weekly','2023-06-24','22:00:00','Tidak Hadir',0,'2023-06-18 02:15:08','farhana',NULL,NULL,'43','34',NULL,NULL,NULL,NULL,0),
-(14,1,8,1,'weekly','2023-06-24','22:00:00','Hadir',2,'2023-06-18 02:22:58','ismail',NULL,NULL,'54','54','7878',3,'7','7',1),
-(15,1,1,1,'weekly','2023-06-24','22:00:00','Hadir',5,'2023-06-18 02:45:51','azila',NULL,NULL,'12','12','asdasd',5,'23','23',1),
-(16,1,6,1,'weekly','2023-06-24','22:00:00','Hadir',6,'2023-06-18 02:46:14','luqman',NULL,NULL,'23','23','Hshdbbhd habs\r\nJsb hjsbd',3,'58','498',1),
-(17,1,9,1,'weekly','2023-06-24','22:00:00','Hadir',7,'2023-06-18 02:46:39','wan.faiz',NULL,NULL,'65','65','sdsd',3,'5','8',1),
-(18,1,10,1,'weekly','2023-06-24','22:00:00','Hadir',4,'2023-06-18 02:47:04','faedzah',NULL,NULL,'45','45','888',4,'8','8',1),
-(19,1,10,1,'weekly','2023-07-01','22:00:00','Tidak Hadir',0,'2023-06-18 02:50:57','faedzah',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0),
-(20,1,3,1,'weekly','2023-07-08','22:00:00','Tidak Hadir',0,'2023-06-18 05:45:52','Hazman',NULL,NULL,'34','34',NULL,NULL,NULL,NULL,0),
-(21,1,3,1,'weekly','2023-07-01','22:00:00','Hadir',1,'2023-06-18 06:12:23','hazman',NULL,NULL,'89','88','ewrr34df',4,'34','34',1),
-(22,1,3,1,'weekly','2023-07-15','22:00:00','Hadir',1,'2023-06-18 06:52:44','hazman',NULL,NULL,'454','45',NULL,NULL,NULL,NULL,0);
+(24,1,3,1,'weekly','2023-06-24','22:00:00','Hadir',1,'2023-06-21 18:20:38','hazman',NULL,NULL,'456','79',NULL,NULL,NULL,NULL,0);
 
 /*Table structure for table `transactions` */
 
@@ -163,7 +147,7 @@ CREATE TABLE `users` (
   `ajar` varchar(333) DEFAULT NULL,
   `setup` varchar(333) DEFAULT NULL,
   `telhp` varchar(333) DEFAULT NULL,
-  `address` varchar(333) DEFAULT NULL,
+  `address` text,
   `telno` varchar(333) DEFAULT NULL,
   `postcode` varchar(333) DEFAULT NULL,
   `newic` varchar(333) DEFAULT NULL,
@@ -177,14 +161,13 @@ CREATE TABLE `users` (
   `last_surah` varchar(333) DEFAULT NULL,
   `last_ms` varchar(333) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 /*Data for the table `users` */
 
 insert  into `users`(`id`,`username`,`password`,`name`,`kelas`,`type`,`ajar`,`setup`,`telhp`,`address`,`telno`,`postcode`,`newic`,`dob`,`gender`,`image`,`adduser`,`adddate`,`upduser`,`upddate`,`last_surah`,`last_ms`) values 
-(1,'azila','azila','NOR AZILA MOHD NOOR','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'hazman','2023-06-10 01:27:33',NULL,NULL),
-(2,'nadiyah','nadiyah','NURUL NADIYAH BT HAMID','1','ketua_pelajar','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:28:11',NULL,NULL),
-(3,'hazman','hazman','HAZMAN B YUSOF','1','pelajar','1','1','01123191948','asdasdsad\r\nsdsd\r\n\r\nds\r\ndssdsdsd',NULL,NULL,'870112435017','2023-06-21','Perempuan',NULL,NULL,NULL,'hazman','2023-06-20 19:35:03',NULL,NULL),
+(2,'nadiyah','nadiyah','NURUL NADIYAH BT HAMID','1','ketua_pelajar','1','1',NULL,NULL,NULL,NULL,NULL,NULL,'Perempuan',NULL,NULL,NULL,'Nadiyah','2023-06-21 18:02:31',NULL,NULL),
+(3,'hazman','hazman','HAZMAN B YUSOF','1','pelajar','1','1','01123191948','no 8 , jalan 3/4g\r\n43650 bandar baru bangi \r\nselangor',NULL,NULL,'870112435017','2023-06-21','lELAKI',NULL,NULL,NULL,'hazman','2023-06-21 17:44:54',NULL,NULL),
 (4,'amirul','amirul','MUHD AMIRUL B MAT HUSSAIN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:28:24',NULL,NULL),
 (5,'hafiz','hafiz','MUHD HAFIZ BIN ZAABA','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:28:34',NULL,NULL),
 (6,'luqman','luqman','LUQMAN BIN MUHD JAFFRI','1','pelajar','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:28:43',NULL,NULL),
@@ -192,14 +175,15 @@ insert  into `users`(`id`,`username`,`password`,`name`,`kelas`,`type`,`ajar`,`se
 (9,'wan.faiz','wan.faiz','WAN FAIZ','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:28:59',NULL,NULL),
 (10,'faedzah','faedzah','FAEDZAH MUSTAPA','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:29:05',NULL,NULL),
 (11,'farhana','farhana','KHAIRUL FARHANA IDRIS','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Hazman','2023-06-10 01:29:12',NULL,NULL),
-(12,'adilah','adilah','ADILAH LIYANA BT ADLI',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(13,'syazwani','syazwani','NUR SYAZWANI IZZATI BT HAMRAN',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(14,'fauziah','fauzaih','FAUZIAH B DIN',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(15,'shariffa','shariffa','PN SHARIFFA','kelas_4','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(16,'khazizah','khazizah','PN KHAZIZAH',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(17,'umiza','umiza','UMIZA BT HAMDAN',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(18,'haslina','haslina','HASLIANA',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(20,'haziman','haziman','HAZIMAN',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+(12,'adilah','adilah','ADILAH LIYANA BT ADLI','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(13,'syazwani','syazwani','NUR SYAZWANI IZZATI BT HAMRAN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(14,'fauziah','fauziah','FAUZIAH B DIN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(16,'khazizah','khazizah','PN KHAZIZAH','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(17,'umiza','umiza','UMIZA BT HAMDAN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(18,'haslina','haslina','HASLIANA','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(20,'haziman','haziman','HAZIMAN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(22,'rashidah','rashidah','RASHIDAH','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(23,'shikin','shikin','SHIKIN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
