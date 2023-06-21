@@ -55,6 +55,46 @@ $(document).ready(function () {
 		}
 	});
 
+	
+	$('div#confirm').click(function(){
+
+		$.validator.messages.required = '';
+		if($("form#form_nonpast").valid()){
+			$('input[name=status]').val('Hadir');
+			var formdata = $("form#form_nonpast").serializeArray();
+
+			$.post( "./kelas/form",$.param(formdata), function( data ){
+			},'json').fail(function(data) {
+				location.reload()
+	        }).done(function(data){
+	        	if(data.operation == 'SUCCESS'){
+					location.reload()
+	        	}else{
+	        		$('#div_error').show();
+	        		$('#span_error').text(data.msg);
+	        	}
+	        });
+		}
+		
+	});
+
+	$('div#tak_confirm').click(function(){
+		$('input[name=status]').val('Tidak Hadir');
+		var formdata = $("form#form_nonpast").serializeArray();
+
+		$.post( "./kelas/form",$.param(formdata), function( data ){
+		},'json').fail(function(data) {
+			location.reload()
+        }).done(function(data){
+        	if(data.operation == 'SUCCESS'){
+				location.reload()
+        	}else{
+        		$('#div_error').show();
+        		$('#span_error').text(data.msg);
+        	}
+        });
+	});
+
 	init();
 });
 

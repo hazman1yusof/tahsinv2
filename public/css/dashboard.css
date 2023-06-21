@@ -93,3 +93,13 @@ div.mytlabel{
     top: 6px;
     right: 6px;
 }
+input.inp_trans{
+    padding: 0px !important;
+    background: transparent !important;
+    border: none !important;
+    text-align: center !important;
+}
+input.error,select.error{
+    background: #ffebeb !important;
+    border-color: #eb9f9f !important;
+}

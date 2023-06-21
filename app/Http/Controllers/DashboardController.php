@@ -37,6 +37,19 @@ class DashboardController extends Controller
                         ->where('date',$date_b4)
                         ->where('time',$jadual->time);
 
+            $user_kdb4 = DB::table('kelas_detail as kd')
+                        ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
+                        ->leftJoin('users as u', function($join) use ($request){
+                                $join = $join->on('u.id', '=', 'kd.user_id');
+                        })
+                        ->where('kd.kelas_id',$kelas_id)
+                        ->where('kd.jadual_id',$jadual->idno)
+                        ->where('kd.type','weekly')
+                        ->where('kd.date',$date_b4)
+                        ->where('kd.time',$jadual->time)
+                        ->orderBy('kd.pos', 'asc')
+                        ->get();
+
             if($kd_b4->exists()){
                 $kd_b4 = $kd_b4->first();
             }else{
@@ -53,7 +66,7 @@ class DashboardController extends Controller
                         ->where('time',$jadual->time);
 
             $count_kelas = DB::table('users')
-                            ->where('kelas',$request->kelas_id)
+                            ->where('kelas',$kelas_id)
                             ->count();
 
             $user_kd = DB::table('kelas_detail as kd')
@@ -82,7 +95,7 @@ class DashboardController extends Controller
                         })
                         ->where('u.id',Auth::user()->id)
                         ->first();
-        return view('dashboard',compact('user_detail','kd_b4','date_b4','kd_after','date_after','jadual','count_kelas','user_kd'));
+        return view('dashboard',compact('user_detail','kd_b4','date_b4','user_kdb4','kd_after','date_after','jadual','count_kelas','user_kd'));
     }
 
     public function upd_user(Request $request){
