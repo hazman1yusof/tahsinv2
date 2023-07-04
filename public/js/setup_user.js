@@ -74,6 +74,7 @@ $(document).ready(function () {
 
 function openmodal(oper){
 	
+	init_form(oper);
 	if(oper == 'edit'){
 		pop_user();
 	}
@@ -124,4 +125,12 @@ function pop_user(){
 function after_save(){
 	$('.ui.modal#mdl_user').modal('hide');
 	dt_user.ajax.reload();
+}
+
+function init_form(oper){
+	if(oper == 'add'){
+		$('#username').prop('readonly',false);
+	}else{
+		$('#username').prop('readonly',true);
+	}
 }

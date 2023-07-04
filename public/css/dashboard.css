@@ -48,6 +48,9 @@ div.myitem.hadir{
 div.myitem.xhadir{
     background: #fad7d7;
 }
+div.myitem.xrespon{
+    background: #fffbcf;
+}
 div.myitem > .grid{
     margin: 0px !important;
 }
@@ -102,4 +105,18 @@ input.inp_trans{
 input.error,select.error{
     background: #ffebeb !important;
     border-color: #eb9f9f !important;
+}
+div.xdone_segment{
+    border-color: darkred !important;
+}
+div.xdone_segment > i.exclamation{
+    position: absolute;
+    top: -10px;
+    left: 8px;
+    z-index: 10;
+    color: darkred;
+    font-size: 20px;
+}
+div.done_segment > i.exclamation{
+    display: none;
 }

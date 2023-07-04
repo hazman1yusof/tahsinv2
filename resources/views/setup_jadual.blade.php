@@ -69,13 +69,13 @@
         <label style="margin-right:8px">Hari</label>
         <select class="ui dropdown" name="hari">
           <option value="">Pilih Hari</option>
-          <option value="isnin">isnin</option>
-          <option value="selasa">selasa</option>
-          <option value="rabu">rabu</option>
-          <option value="khamis">khamis</option>
-          <option value="jumaat">jumaat</option>
-          <option value="sabtu">sabtu</option>
-          <option value="ahad">ahad</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
         </select>
 
           <label style="margin-right:8px; margin-left: 8px;">Time</label>

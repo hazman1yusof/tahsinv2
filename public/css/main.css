@@ -95,7 +95,7 @@ div.ui-jqgrid-bdiv{
     background: rgba(0,0,0, 0.5) !important;
 }
 .container_sem {
-    padding-right:15px; 
+    padding-right:8px; 
     padding-top:15px;
     padding-bottom:15px;
     padding-left: 95px;
@@ -114,7 +114,7 @@ div.ui-jqgrid-bdiv{
     display: none;
 }
 .container_sem {
-    padding-left: 15px;
+    padding-left: 8px;
     padding-top: 50px;
 }
 h4.mytitle{
@@ -210,10 +210,11 @@ span.himsg{
 
 div.mycontainer{
     background: rgb(255 255 255 / 60%);
-    padding: 20px;
+    padding: 8px;
     border: solid 0.5px grey;
     border-radius: 15px;
     box-shadow: 2px 2px 20px 1px grey;
+    margin: auto;
 }
 
 div.fc-view-harness {

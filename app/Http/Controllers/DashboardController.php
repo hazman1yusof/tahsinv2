@@ -37,18 +37,34 @@ class DashboardController extends Controller
                         ->where('date',$date_b4)
                         ->where('time',$jadual->time);
 
-            $user_kdb4 = DB::table('kelas_detail as kd')
+            // $user_kdb4 = DB::table('kelas_detail as kd')
+            //             ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
+            //             ->leftJoin('users as u', function($join) use ($request){
+            //                     $join = $join->on('u.id', '=', 'kd.user_id');
+            //             })
+            //             ->where('kd.kelas_id',$kelas_id)
+            //             ->where('kd.jadual_id',$jadual->idno)
+            //             ->where('kd.type','weekly')
+            //             ->where('kd.date',$date_b4)
+            //             ->where('kd.time',$jadual->time)
+            //             ->orderBy('kd.pos', 'asc')
+            //             ->get();
+
+            $user_kdb4 = DB::table('users as u')
                         ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
-                        ->leftJoin('users as u', function($join) use ($request){
-                                $join = $join->on('u.id', '=', 'kd.user_id');
+                        ->leftJoin('kelas_detail as kd', function($join) use ($request,$kelas_id,$jadual,$date_b4){
+                                $join = $join->on('u.id', '=', 'kd.user_id')
+                                        ->where('kd.kelas_id',$kelas_id)
+                                        ->where('kd.jadual_id',$jadual->idno)
+                                        ->where('kd.type','weekly')
+                                        ->where('kd.date',$date_b4)
+                                        ->where('kd.time',$jadual->time);
                         })
-                        ->where('kd.kelas_id',$kelas_id)
-                        ->where('kd.jadual_id',$jadual->idno)
-                        ->where('kd.type','weekly')
-                        ->where('kd.date',$date_b4)
-                        ->where('kd.time',$jadual->time)
+                        ->where('u.kelas',$kelas_id)
                         ->orderBy('kd.pos', 'asc')
                         ->get();
+
+            // dd($user_kdb4);
 
             if($kd_b4->exists()){
                 $kd_b4 = $kd_b4->first();
@@ -56,29 +72,51 @@ class DashboardController extends Controller
                 $kd_b4 = null;
             }
 
-            $date_after = Carbon::parse("next ".$jadual->hari)->format('Y-m-d');
+            $today_day = Carbon::now("Asia/Kuala_Lumpur")->format('l');
+            if($today_day == $jadual->hari){
+                $date_after = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+            }else{
+                $date_after = Carbon::parse("next ".$jadual->hari)->format('Y-m-d');
+            }
+            
             $kd_after = DB::table('kelas_detail')
                         ->where('kelas_id',$kelas_id)
                         ->where('user_id',Auth::user()->id)
                         ->where('jadual_id',$jadual->idno)
                         ->where('type','weekly')
                         ->where('date',$date_after)
-                        ->where('time',$jadual->time);
+                        ->where('time',$jadual->time)
+                        ->orderBy('date', 'asc');
 
             $count_kelas = DB::table('users')
                             ->where('kelas',$kelas_id)
                             ->count();
 
-            $user_kd = DB::table('kelas_detail as kd')
+            // $user_kd = DB::table('kelas_detail as kd')
+            //             ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
+            //             ->leftJoin('users as u', function($join) use ($request){
+            //                     $join = $join->on('u.id', '=', 'kd.user_id');
+            //             })
+            //             ->where('kd.kelas_id',$kelas_id)
+            //             ->where('kd.jadual_id',$jadual->idno)
+            //             ->where('kd.type','weekly')
+            //             ->where('kd.date',$date_after)
+            //             ->where('kd.time',$jadual->time)
+            //             ->orderBy('kd.pos', 'asc')
+            //             ->get();
+
+
+            $user_kd = DB::table('users as u')
                         ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
-                        ->leftJoin('users as u', function($join) use ($request){
-                                $join = $join->on('u.id', '=', 'kd.user_id');
+                        ->leftJoin('kelas_detail as kd', function($join) use ($request,$kelas_id,$jadual,$date_after){
+                                $join = $join->on('u.id', '=', 'kd.user_id')
+                                            ->where('kd.kelas_id',$kelas_id)
+                                            ->where('kd.jadual_id',$jadual->idno)
+                                            ->where('kd.type','weekly')
+                                            ->where('kd.date',$date_after)
+                                            ->where('kd.time',$jadual->time);
                         })
-                        ->where('kd.kelas_id',$kelas_id)
-                        ->where('kd.jadual_id',$jadual->idno)
-                        ->where('kd.type','weekly')
-                        ->where('kd.date',$date_after)
-                        ->where('kd.time',$jadual->time)
+                        ->where('u.kelas',$kelas_id)
                         ->orderBy('kd.pos', 'asc')
                         ->get();
 

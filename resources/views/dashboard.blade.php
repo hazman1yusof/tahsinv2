@@ -27,8 +27,8 @@
     <div class="ui container mycontainer">
 
         <img src="./img/fancyline1.png" class="segment_line">
-        <div class="ui segments" style="border-color: darkgoldenrod;margin-top: -10px;">
-            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #fff8ee;">
+        <div class="ui segments" style="border-color: #ffebbb;margin-top: -10px;">
+            <div class="ui secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #fff8ee;">
                 <h4 style="margin-bottom: 5px;">Maklumat Pelajar</h4>
                 <i class="plus square icon hide_but" id="btnhid_userdtl"></i>
             </div>
@@ -54,8 +54,8 @@
         </div>
 
         <img src="./img/fancyline1.png" class="segment_line">
-        <div class="ui segments" style="border-color: #e300c9;margin-top: -10px;">
-            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #ffeafd;">
+        <div class="ui segments" style="border-color: #ffcef9;margin-top: -10px;">
+            <div class="ui secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #fff7fa;">
                 <h4 style="margin-bottom: 5px;">Tatacara dan Adab semasa hadir ke Tadarus Al-Quran</h4>
                 <i class="plus square icon hide_but" id="btnhid_prtkls"></i>
             </div>
@@ -74,8 +74,8 @@
         </div>
 
         <img src="./img/fancyline1.png" class="segment_line">
-        <div class="ui segments" style="border-color: #6a9ba5;margin-top: -10px;">
-            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #e1faff;">
+        <div class="ui segments" style="border-color: #b3f2ff;margin-top: -10px;">
+            <div class="ui secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #f1fdff;">
                 <h4 style="margin-bottom: 5px;">Kelas sebelum ini</h4>
                 <i class="plus square icon hide_but" id="btnhid_klsb4"></i>
             </div>
@@ -98,7 +98,7 @@
                             <div class="ui grid">
                               <div class="one wide column pos">{{$user->pos}}</div>
                               <div class="twelve wide column name">{{$user->name}}</div>
-                              <div class="three wide column ms">{{$user->surah}}:{{$user->ms}}</div>
+                              <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
                             </div>
                           </div>
                           @endif
@@ -111,11 +111,25 @@
                             <div class="ui grid">
                               <div class="one wide column pos">{{$user->pos}}</div>
                               <div class="twelve wide column name">{{$user->name}}</div>
-                              <div class="three wide column ms">{{$user->surah}}:{{$user->ms}}</div>
+                              <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
                             </div>
                           </div>
                           @endif
                       @endforeach
+
+                      <p><b>Pelajar Tidak Respon:</b></p>
+                      @foreach ($user_kdb4 as $user)
+                        @if(empty($user->status))
+                          <div class="item myitem xrespon">
+                            <div class="ui grid">
+                              <div class="one wide column pos">{{$user->pos}}</div>
+                              <div class="twelve wide column name">{{$user->name}}</div>
+                              <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
+                            </div>
+                          </div>
+                          @endif
+                      @endforeach
+
                     </div>
                     <table >
                         <tr>
@@ -128,7 +142,7 @@
                         <tr>
                         <tr>
                             <th>Tarikh</th>
-                            <td>{{Carbon\Carbon::createFromFormat('Y-m-d',$date_after)->format('d-m-Y')}}</td>
+                            <td>{{Carbon\Carbon::createFromFormat('Y-m-d',$date_b4)->format('d-m-Y')}}</td>
                         <tr>
                         <tr>
                             <th>Masa</th>
@@ -171,8 +185,8 @@
         </div>
 
         <img src="./img/fancyline1.png" class="segment_line">
-        <div class="ui segments" style="border-color: #468740;margin-top: -10px;">
-            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #edffeb;">
+        <div class="ui segments @if(!empty($kd_after)){{'done_segment'}}@else{{'xdone_segment'}}@endif" style="border-color: #d6ffd2;margin-top: -10px;"><i class="exclamation circle icon"></i>
+            <div class="ui secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #f4fff3;">
                 <h4 style="margin-bottom: 5px;">Kelas selepas ini</h4>
                 <i class="minus square icon hide_but" id="btnhid_klsafter"></i>
             </div>
@@ -198,7 +212,7 @@
                             <div class="ui grid">
                               <div class="one wide column pos">{{$user->pos}}</div>
                               <div class="twelve wide column name">{{$user->name}}</div>
-                              <div class="three wide column ms">{{$user->surah}}:{{$user->ms}}</div>
+                              <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
                             </div>
                           </div>
                           @endif
@@ -211,7 +225,21 @@
                             <div class="ui grid">
                               <div class="one wide column pos">{{$user->pos}}</div>
                               <div class="twelve wide column name">{{$user->name}}</div>
-                              <div class="three wide column ms">{{$user->surah}}:{{$user->ms}}</div>
+                              <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
+                            </div>
+                          </div>
+                          @endif
+                      @endforeach
+
+
+                      <p><b>Pelajar Tidak Respon:</b></p>
+                      @foreach ($user_kd as $user)
+                        @if(empty($user->status))
+                          <div class="item myitem xrespon">
+                            <div class="ui grid">
+                              <div class="one wide column pos">{{$user->pos}}</div>
+                              <div class="twelve wide column name">{{$user->name}}</div>
+                              <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
                             </div>
                           </div>
                           @endif
@@ -305,8 +333,8 @@
         </div>
 
         <img src="./img/fancyline1.png" class="segment_line">
-        <div class="ui segments" style="border-color: #910030;margin-top: -10px;">
-            <div class="ui title secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #ffedf3;">
+        <div class="ui segments" style="border-color: #ffd4e2;margin-top: -10px;">
+            <div class="ui secondary segment" style="text-align: center;padding: 15px 10px 5px;background-color: #ffe8e8;">
                 <h4 style="margin-bottom: 5px;">Bantuan Naqib</h4>
                 <i class="plus square icon hide_but" id="btnhid_naqib"></i>
             </div>
