@@ -11,7 +11,7 @@ if(my_marked == 1){
 $(document).ready(function () {
 	$('#btnhid_userdtl').click(function(){
 		if($(this).hasClass('plus')){
-			$('#sgmnt_userdtl').slideDown();
+			$('#sgmnt_userdtl').slideDown('fast',function(){SmoothScrollTo('div#sgmnt_userdtl');});
 			$(this).removeClass('plus').addClass('minus');
 		}else if($(this).hasClass('minus')){
 			$('#sgmnt_userdtl').slideUp();
@@ -20,7 +20,7 @@ $(document).ready(function () {
 	});
 	$('#btnhid_prtkls').click(function(){
 		if($(this).hasClass('plus')){
-			$('#sgmnt_prtkls').slideDown();
+			$('#sgmnt_prtkls').slideDown('fast',function(){SmoothScrollTo('div#sgmnt_prtkls');});
 			$(this).removeClass('plus').addClass('minus');
 		}else if($(this).hasClass('minus')){
 			$('#sgmnt_prtkls').slideUp();
@@ -29,7 +29,7 @@ $(document).ready(function () {
 	});
 	$('#btnhid_klsb4').click(function(){
 		if($(this).hasClass('plus')){
-			$('#sgmnt_klsb4').slideDown();
+			$('#sgmnt_klsb4').slideDown('fast',function(){SmoothScrollTo('div#sgmnt_klsb4');init_textare();});
 			$(this).removeClass('plus').addClass('minus');
 		}else if($(this).hasClass('minus')){
 			$('#sgmnt_klsb4').slideUp();
@@ -38,7 +38,7 @@ $(document).ready(function () {
 	});
 	$('#btnhid_klsafter').click(function(){
 		if($(this).hasClass('plus')){
-			$('#sgmnt_klsafter').slideDown();
+			$('#sgmnt_klsafter').slideDown('fast',function(){SmoothScrollTo('div#sgmnt_klsafter');init_textare();});
 			$(this).removeClass('plus').addClass('minus');
 		}else if($(this).hasClass('minus')){
 			$('#sgmnt_klsafter').slideUp();
@@ -47,13 +47,14 @@ $(document).ready(function () {
 	});
 	$('#btnhid_naqib').click(function(){
 		if($(this).hasClass('plus')){
-			$('#sgmnt_naqib').slideDown();
+			$('#sgmnt_naqib').slideDown('fast',function(){SmoothScrollTo('div#sgmnt_naqib');});
 			$(this).removeClass('plus').addClass('minus');
 		}else if($(this).hasClass('minus')){
 			$('#sgmnt_naqib').slideUp();
 			$(this).removeClass('minus').addClass('plus');
 		}
 	});
+	SmoothScrollTo('div#sgmnt_klsafter');
 
 	
 	$('div#confirm').click(function(){
@@ -79,20 +80,7 @@ $(document).ready(function () {
 	});
 
 	$('div#tak_confirm').click(function(){
-		$('input[name=status]').val('Tidak Hadir');
-		var formdata = $("form#form_nonpast").serializeArray();
-
-		$.post( "./kelas/form",$.param(formdata), function( data ){
-		},'json').fail(function(data) {
-			location.reload()
-        }).done(function(data){
-        	if(data.operation == 'SUCCESS'){
-				location.reload()
-        	}else{
-        		$('#div_error').show();
-        		$('#span_error').text(data.msg);
-        	}
-        });
+		openmodal_alasan();
 	});
 
 	init();
@@ -108,5 +96,60 @@ function init(){
 		$('select#pos').val(my_pos);
 	}
 
-	$('#rating').rating('disable');
+	$('#rating_after').rating('disable');
+	$('#rating_b4').rating('disable');
+
+	init_textare();
+	
+}
+
+function openmodal_alasan(){
+
+	$("#alasan").off('keydown');
+	$("#alasan").on('keydown',function(e) {
+        if(e.key === 'Enter') {
+        	e.preventDefault();
+            $("div#alasan_ok").click();
+        }
+    });
+
+	$('.ui.modal#alasan_modal').modal({
+		autofocus: false,
+		closable:false,
+		onApprove:function($element){
+			if($("form#form_alasan").valid()) {
+				$('input[name=status]').val('Tidak Hadir');
+				var formdata = $("form#form_nonpast").serializeArray();
+				var obj={alasan:$('#alasan').val()}
+
+				$.post( "./kelas/form",$.param(formdata)+'&'+$.param(obj), function( data ){
+				},'json').fail(function(data) {
+					location.reload()
+		        }).done(function(data){
+		        	if(data.operation == 'SUCCESS'){
+						location.reload()
+		        	}else{
+		        		$('#div_error').show();
+		        		$('#span_error').text(data.msg);
+		        	}
+		        });
+				return false;
+			}else{
+				return false;
+			}
+		},
+		onHidden:function($element){
+			emptyFormdata_div('form#form_alasan');
+		}
+	}).modal('show');
+}
+
+function init_textare(){
+	$('textarea#remark_b4,textarea#remark_after').each(function () {
+		if(this.value.trim() == ''){
+			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}else{
+			this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}
+	});
 }

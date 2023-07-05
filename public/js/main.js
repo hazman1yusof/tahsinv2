@@ -1,17 +1,19 @@
 $(document).ready(function() {
     change_topuserlength();
-    // $('.ui.sidebar').sidebar({
-    //         onHide: function() {
-    //           console.log('on hidden');
-    //         }
-    //     })
+    $('.ui.sidebar').sidebar({
+        onHide: function() {
+            $('div#content').addClass('overflowing');
+        },
+        onShow: function() {
+            $('div#content').removeClass('overflowing');
+        }
+    });
+
     $('#showSidebar').click(function(){
         $('.ui.sidebar').sidebar('toggle');
     });
 
-    $('.ui.sidebar').onHide
-
-    // $('.ui.dropdown').dropdown({'clearable':true});
+    $('.ui.dropdown').dropdown({'clearable':true});
     $('.ui.checkbox').checkbox();
 
     $('.ui.left.fixed.vertical.icon.menu a').popup({position:'right center'});

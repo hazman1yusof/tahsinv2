@@ -28,6 +28,12 @@ div.myitem.hadir{
 div.myitem.xhadir{
 	background: #fad7d7;
 }
+div.myitem.xrespon{
+    background: #fffbcf;
+}
+div.myitem.isame{
+    border: solid 1px #7983ff;
+}
 div.myitem > .grid{
 	margin: 0px !important;
 }
@@ -105,4 +111,9 @@ input.inp_trans{
     background: transparent !important;
     border: none !important;
     text-align: center !important;
+}
+span.alasan{
+    font-style: italic;
+    color: darkred;
+    font-size: 11px;
 }

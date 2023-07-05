@@ -50,18 +50,33 @@ class kelasController extends Controller
                             ->where('kelas',$request->kelas_id)
                             ->count();
 
-        $user_kd = DB::table('kelas_detail as kd')
-                        ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
-                        ->leftJoin('users as u', function($join) use ($request){
-                                $join = $join->on('u.id', '=', 'kd.user_id');
-                        })
-                        ->where('kd.kelas_id',$request->kelas_id)
-                        ->where('kd.jadual_id',$request->jadual_id)
-                        ->where('kd.type',$request->type)
-                        ->where('kd.date',$request->date)
-                        ->where('kd.time',$request->time)
-                        ->orderBy('kd.pos', 'asc')
-                        ->get();
+        // $user_kd = DB::table('kelas_detail as kd')
+        //                 ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
+        //                 ->leftJoin('users as u', function($join) use ($request){
+        //                         $join = $join->on('u.id', '=', 'kd.user_id');
+        //                 })
+        //                 ->where('kd.kelas_id',$request->kelas_id)
+        //                 ->where('kd.jadual_id',$request->jadual_id)
+        //                 ->where('kd.type',$request->type)
+        //                 ->where('kd.date',$request->date)
+        //                 ->where('kd.time',$request->time)
+        //                 ->orderBy('kd.pos', 'asc')
+        //                 ->get();
+
+
+        $user_kd = DB::table('users as u')
+                    ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.alasan','kd.surah2','kd.ms2','kd.marked','u.name')
+                    ->leftJoin('kelas_detail as kd', function($join) use ($request){
+                            $join = $join->on('u.id', '=', 'kd.user_id')
+                                        ->where('kd.kelas_id',$request->kelas_id)
+                                        ->where('kd.jadual_id',$request->jadual_id)
+                                        ->where('kd.type',$request->type)
+                                        ->where('kd.date',$request->date)
+                                        ->where('kd.time',$request->time);
+                    })
+                    ->where('u.kelas',$request->kelas_id)
+                    ->orderBy('kd.pos', 'asc')
+                    ->get();
 
         if($date->isPast()){
             $ispast=true;
@@ -222,6 +237,7 @@ class kelasController extends Controller
                         ->where('time',$request->time)
                         ->update([
                             'status' => $request->status,
+                            'alasan' => $request->alasan,
                             'pos' => $pos,
                             'surah' => $request->surah,
                             'ms' => $request->ms
@@ -239,6 +255,7 @@ class kelasController extends Controller
                         'ms' => $request->ms,
                         'status' =>  $request->status,
                         'pos' => $pos,
+                        'alasan' => $request->alasan,
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'adduser' => session('username')
                     ]);

@@ -48,7 +48,7 @@
                 <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">I/C</span><span class="col_cont">{{$user_detail->newic}}</span></div>
                 <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">DOB</span><span class="col_cont">{{$user_detail->dob}}</span></div>
                 <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Gender</span><span class="col_cont">{{$user_detail->gender}}</span></div>
-                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Age</span><span class="col_cont">{{$user_detail->dob}}</span></div>
+                <div class="sixteen wide tablet eight wide computer column col_"><span class="col_titl">Age</span><span class="col_cont">{{$user_detail->age}}</span></div>
              </div>
             </div>
         </div>
@@ -91,7 +91,7 @@
                      </p>
                       @foreach ($user_kdb4 as $user)
                         @if($user->status == 'Hadir')
-                          <div class="item myitem hadir">
+                          <div class="item myitem hadir @if($user->user_id == Auth::user()->id){{'isame'}}@endif">
                             @if($user->marked == '1')
                             <div class="floating ui yellow label myflabel"><i class="checkmark icon myficon"></i></div>
                             @endif
@@ -107,10 +107,10 @@
                       <p><b>Pelajar Tidak Hadir:</b></p>
                       @foreach ($user_kdb4 as $user)
                         @if($user->status == 'Tidak Hadir')
-                          <div class="item myitem xhadir">
+                          <div class="item myitem xhadir @if($user->user_id == Auth::user()->id){{'isame'}}@endif">
                             <div class="ui grid">
                               <div class="one wide column pos">{{$user->pos}}</div>
-                              <div class="twelve wide column name">{{$user->name}}</div>
+                              <div class="twelve wide column name">{{$user->name}}<br><span class="alasan">{{$user->alasan}}<span></div>
                               <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
                             </div>
                           </div>
@@ -120,7 +120,7 @@
                       <p><b>Pelajar Tidak Respon:</b></p>
                       @foreach ($user_kdb4 as $user)
                         @if(empty($user->status))
-                          <div class="item myitem xrespon">
+                          <div class="item myitem xrespon @if($user->user_id == Auth::user()->id){{'isame'}}@endif">
                             <div class="ui grid">
                               <div class="one wide column pos">{{$user->pos}}</div>
                               <div class="twelve wide column name">{{$user->name}}</div>
@@ -155,12 +155,12 @@
                     <div class="ui yellow segment" style="margin-top:10px">
                         <div class="field">
                           <label>Nota Dari Ustaz</label>
-                          <textarea name="remark" id="remark" readonly>@if(!empty($kd_b4)){{$kd_b4->remark}}@endif</textarea>
+                          <textarea name="remark" id="remark_b4" readonly>@if(!empty($kd_b4)){{$kd_b4->remark}}@endif</textarea>
                         </div>
 
                         <div class="field">
                           <label>Rating Pengajian</label>
-                          <div id="rating" class="ui olive rating" data-icon="quran" data-rating="@if(!empty($kd_b4)){{$kd_b4->rating}}@endif" data-max-rating="5"></div>
+                          <div id="rating_b4" class="ui olive rating" data-icon="quran" data-rating="@if(!empty($kd_b4)){{$kd_b4->rating}}@endif" data-max-rating="5"></div>
                         </div>
                     </div>
                     <div class="ui segment tertiary inverted green msgreen">
@@ -205,7 +205,7 @@
                      </p>
                       @foreach ($user_kd as $user)
                         @if($user->status == 'Hadir')
-                          <div class="item myitem hadir">
+                          <div class="item myitem hadir @if($user->user_id == Auth::user()->id){{'isame'}}@endif">
                             @if($user->marked == '1')
                             <div class="floating ui yellow label myflabel"><i class="checkmark icon myficon"></i></div>
                             @endif
@@ -221,21 +221,20 @@
                       <p><b>Pelajar Tidak Hadir:</b></p>
                       @foreach ($user_kd as $user)
                         @if($user->status == 'Tidak Hadir')
-                          <div class="item myitem xhadir">
+                          <div class="item myitem xhadir @if($user->user_id == Auth::user()->id){{'isame'}}@endif">
                             <div class="ui grid">
                               <div class="one wide column pos">{{$user->pos}}</div>
-                              <div class="twelve wide column name">{{$user->name}}</div>
+                              <div class="twelve wide column name">{{$user->name}}<br><span class="alasan">{{$user->alasan}}<span></div>
                               <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
                             </div>
                           </div>
                           @endif
                       @endforeach
 
-
                       <p><b>Pelajar Tidak Respon:</b></p>
                       @foreach ($user_kd as $user)
                         @if(empty($user->status))
-                          <div class="item myitem xrespon">
+                          <div class="item myitem xrespon @if($user->user_id == Auth::user()->id){{'isame'}}@endif">
                             <div class="ui grid">
                               <div class="one wide column pos">{{$user->pos}}</div>
                               <div class="twelve wide column name">{{$user->name}}</div>
@@ -303,12 +302,12 @@
                     <div class="ui yellow segment" style="margin-top:10px">
                         <div class="field">
                           <label>Nota Dari Ustaz</label>
-                          <textarea name="remark" id="remark" readonly>@if(!empty($kd_after)){{$kd_after->remark}}@endif</textarea>
+                          <textarea name="remark" id="remark_after" readonly rows="1">@if(!empty($kd_after)){{$kd_after->remark}}@endif</textarea>
                         </div>
 
                         <div class="field">
                           <label>Rating Pengajian</label>
-                          <div id="rating" class="ui olive rating" data-icon="quran" data-rating="@if(!empty($kd_after)){{$kd_after->rating}}@endif" data-max-rating="5"></div>
+                          <div id="rating_after" class="ui olive rating" data-icon="quran" data-rating="@if(!empty($kd_after)){{$kd_after->rating}}@endif" data-max-rating="5"></div>
                         </div>
                     </div>
                     <div class="ui segment tertiary inverted green msgreen">
@@ -345,15 +344,30 @@
             </div>
         </div>
 
+        <div class="ui mini modal" id="alasan_modal">
+            <div class="center aligned content">
+                <form class="ui form" id="form_alasan" autocomplete="off">
+                    <label>Alasan untuk tidak hadir</label>
+                    <div class="ui fluid input">
+                      <input type="text" placeholder="Please input your reason in here" id="alasan" name="alasan" required>
+                    </div>
+                </form>
+            </div>
+            <div class="center aligned actions">
+                <div class="ui negative button">Cancel</div>
+                <div class="ui positive button" id="alasan_ok">OK</div>
+            </div>
+        </div>
+
     </div>
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('css/dashboard.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/dashboard.css')}}?v=1">
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/dashboard.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/dashboard.js') }}?v=1"></script>
 @endsection
 
 

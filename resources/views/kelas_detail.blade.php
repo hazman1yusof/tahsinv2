@@ -27,7 +27,7 @@
 @section('content')
     <div class="ui container mycontainer">
         <h4 class="mytitle" style="position: relative;">
-            <button class="circular ui icon button myback" onclick="history.back()">
+            <button class="circular ui icon button myback" onclick="window.location.replace('./kelas');">
                 <i class="arrow left icon"></i>
             </button> 
             Kelas
@@ -48,7 +48,7 @@
              </p>
               @foreach ($user_kd as $user)
                 @if($user->status == 'Hadir')
-                  <div class="item myitem hadir">
+                  <div class="item myitem hadir @if($user->user_id == Auth::user()->id){{'isame'}}@endif">
                     @if($user->marked == '1')
                     <div class="floating ui yellow label myflabel"><i class="checkmark icon myficon"></i></div>
                     @endif
@@ -64,11 +64,24 @@
               <p><b>Pelajar Tidak Hadir:</b></p>
               @foreach ($user_kd as $user)
                 @if($user->status == 'Tidak Hadir')
-                  <div class="item myitem xhadir">
+                  <div class="item myitem xhadir @if($user->user_id == Auth::user()->id){{'isame'}}@endif">
+                    <div class="ui grid">
+                      <div class="one wide column pos">{{$user->pos}}</div>
+                      <div class="twelve wide column name">{{$user->name}}<br><span class="alasan">{{$user->alasan}}<span></div>
+                      <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
+                    </div>
+                  </div>
+                  @endif
+              @endforeach
+
+              <p><b>Pelajar Tidak Respon:</b></p>
+              @foreach ($user_kd as $user)
+                @if(empty($user->status))
+                  <div class="item myitem xrespon @if($user->user_id == Auth::user()->id){{'isame'}}@endif">
                     <div class="ui grid">
                       <div class="one wide column pos">{{$user->pos}}</div>
                       <div class="twelve wide column name">{{$user->name}}</div>
-                      <div class="three wide column ms">{{$user->surah}}:{{$user->ms}}</div>
+                      <div class="three wide column ms">{{$user->surah}}: {{$user->ms}}</div>
                     </div>
                   </div>
                   @endif
@@ -161,14 +174,29 @@
             </div>
         </form>
     </div>
+
+    <div class="ui mini modal" id="alasan_modal">
+        <div class="center aligned content">
+            <form class="ui form" id="form_alasan" autocomplete="off">
+                <label>Alasan untuk tidak hadir</label>
+                <div class="ui fluid input">
+                  <input type="text" placeholder="Please input your reason in here" id="alasan" name="alasan" required>
+                </div>
+            </form>
+        </div>
+        <div class="center aligned actions">
+            <div class="ui negative button">Cancel</div>
+            <div class="ui positive button" id="alasan_ok">OK</div>
+        </div>
+    </div>
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('css/kelas.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/kelas.css')}}?v=1">
 @endsection
 
 @section('js')
-<script type="text/javascript" src="{{ asset('js/kelas_detail.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/kelas_detail.js') }}?v=1"></script>
 @endsection
 
 

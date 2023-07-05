@@ -10,12 +10,12 @@
 
 @section('content')
 <!-- Content area -->
-<div class="ui container content">
+<div class="ui container content login">
 	<div class="ui centered grid">
 		<div class="column" style="max-width: 350px;">
 			<form class="ui form" method="POST" autocomplete="off">
 				{{ csrf_field() }}
-				<div class="ui raised segment" style="background: rgb(121 205 255 / 50%); padding: 20px 40px;">
+				<div class="ui raised segment" style="background: rgb(121 205 255 / 50%); padding: 20px 20px;">
 					<div class="ui medium rounded image" style="display: flex;justify-content: center;">
 					  <img src="{{ asset('img/quran_img.png') }}" style="width: 100px;">
 					</div>
@@ -77,6 +77,10 @@
 	    padding: 20px 5px;
 	    text-shadow: 1px 1px 10px #e9bd1e;
 	    margin-bottom: 20px;
+	    text-decoration-color: white;
+	    text-decoration-style: double;
+	    text-decoration-line: underline;
+	    text-decoration-thickness: from-font;
     }
 </style>
 @endsection

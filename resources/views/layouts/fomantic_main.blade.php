@@ -34,7 +34,7 @@
         @if(!Request::is('login'))
             @include('layouts.navs')
         @endif
-        <div class="pusher container_sem" id="content">
+        <div class="pusher container_sem overflowing" id="content">
             @yield('content')
         </div>
     </body>
@@ -48,8 +48,8 @@
     <script type="text/ecmascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 
-    <script src="{{ asset('js/utility.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/utility.js') }}?v=1"></script>
+    <script src="{{ asset('js/main.js') }}?v=1"></script>
 
     <script type="text/javascript">
         $( document ).ready(function() {

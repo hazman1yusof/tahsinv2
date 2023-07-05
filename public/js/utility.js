@@ -1854,7 +1854,7 @@ function if_none(str){
 	return (str)?str:'NONE';
 }
 
-function SmoothScrollTo(id_or_Name, timelength,callback,minustop=120){
+function SmoothScrollTo(id_or_Name, timelength,callback,minustop=95){
   var timelength = timelength || 500;
   if($(id_or_Name).offset() != undefined){
 	  $('html, body').animate({

@@ -37,21 +37,8 @@ class DashboardController extends Controller
                         ->where('date',$date_b4)
                         ->where('time',$jadual->time);
 
-            // $user_kdb4 = DB::table('kelas_detail as kd')
-            //             ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
-            //             ->leftJoin('users as u', function($join) use ($request){
-            //                     $join = $join->on('u.id', '=', 'kd.user_id');
-            //             })
-            //             ->where('kd.kelas_id',$kelas_id)
-            //             ->where('kd.jadual_id',$jadual->idno)
-            //             ->where('kd.type','weekly')
-            //             ->where('kd.date',$date_b4)
-            //             ->where('kd.time',$jadual->time)
-            //             ->orderBy('kd.pos', 'asc')
-            //             ->get();
-
             $user_kdb4 = DB::table('users as u')
-                        ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
+                        ->select('kd.idno','kd.kelas_id','u.id as user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.alasan','kd.surah2','kd.ms2','kd.marked','u.name')
                         ->leftJoin('kelas_detail as kd', function($join) use ($request,$kelas_id,$jadual,$date_b4){
                                 $join = $join->on('u.id', '=', 'kd.user_id')
                                         ->where('kd.kelas_id',$kelas_id)
@@ -63,8 +50,6 @@ class DashboardController extends Controller
                         ->where('u.kelas',$kelas_id)
                         ->orderBy('kd.pos', 'asc')
                         ->get();
-
-            // dd($user_kdb4);
 
             if($kd_b4->exists()){
                 $kd_b4 = $kd_b4->first();
@@ -92,22 +77,8 @@ class DashboardController extends Controller
                             ->where('kelas',$kelas_id)
                             ->count();
 
-            // $user_kd = DB::table('kelas_detail as kd')
-            //             ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
-            //             ->leftJoin('users as u', function($join) use ($request){
-            //                     $join = $join->on('u.id', '=', 'kd.user_id');
-            //             })
-            //             ->where('kd.kelas_id',$kelas_id)
-            //             ->where('kd.jadual_id',$jadual->idno)
-            //             ->where('kd.type','weekly')
-            //             ->where('kd.date',$date_after)
-            //             ->where('kd.time',$jadual->time)
-            //             ->orderBy('kd.pos', 'asc')
-            //             ->get();
-
-
             $user_kd = DB::table('users as u')
-                        ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
+                        ->select('kd.idno','kd.kelas_id','u.id as user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.alasan','kd.surah2','kd.ms2','kd.marked','u.name')
                         ->leftJoin('kelas_detail as kd', function($join) use ($request,$kelas_id,$jadual,$date_after){
                                 $join = $join->on('u.id', '=', 'kd.user_id')
                                             ->where('kd.kelas_id',$kelas_id)
@@ -133,6 +104,12 @@ class DashboardController extends Controller
                         })
                         ->where('u.id',Auth::user()->id)
                         ->first();
+
+            if(!empty($user_detail->dob)){
+                $user_detail->age = Carbon::parse($user_detail->dob)->diff(Carbon::now())->format('%y');
+            }else{
+                $user_detail->age = '';
+            }
         return view('dashboard',compact('user_detail','kd_b4','date_b4','user_kdb4','kd_after','date_after','jadual','count_kelas','user_kd'));
     }
 

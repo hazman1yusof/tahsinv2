@@ -51,6 +51,9 @@ div.myitem.xhadir{
 div.myitem.xrespon{
     background: #fffbcf;
 }
+div.myitem.isame{
+    border: solid 1px #7983ff;
+}
 div.myitem > .grid{
     margin: 0px !important;
 }
@@ -120,3 +123,9 @@ div.xdone_segment > i.exclamation{
 div.done_segment > i.exclamation{
     display: none;
 }
+span.alasan{
+    font-style: italic;
+    color: darkred;
+    font-size: 11px;
+}
+textarea#remark_after,textarea#remark_b4{border-color: transparent;}

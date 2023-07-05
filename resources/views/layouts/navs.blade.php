@@ -2,7 +2,7 @@
     <a class="item" id="showSidebar" style="padding: 20px 15px 20px 15px !important;"><img src="{{ asset('img/quran.png')}}"></a>
     <span class="topmenu_title">Keluarga AL-Quran</span>
     <div class="right menu">
-        <div class="ui simple dropdown item" style="padding: 13px 0px !important;">
+        <div class="ui dropdown item" style="padding: 13px 0px !important;">
         <span class="himsg">{{Auth::user()->username}}<i class="dropdown icon"></i></span>
           <div class="menu">
             <a class="item" href="./upd_user"><i class="edit icon"></i>Update My Data</a>

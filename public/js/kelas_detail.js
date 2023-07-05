@@ -41,20 +41,7 @@ $(document).ready(function() {
 	});
 
 	$('div#tak_confirm').click(function(){
-		$('input[name=status]').val('Tidak Hadir');
-		var formdata = $("form#form_nonpast").serializeArray();
-
-		$.post( "./kelas/form",$.param(formdata), function( data ){
-		},'json').fail(function(data) {
-			location.reload()
-        }).done(function(data){
-        	if(data.operation == 'SUCCESS'){
-				location.reload()
-        	}else{
-        		$('#div_error').show();
-        		$('#span_error').text(data.msg);
-        	}
-        });
+		openmodal_alasan();
 	});
 });
 
@@ -69,4 +56,45 @@ function init(){
 	}
 
 	$('#rating').rating('disable');
+}
+
+function openmodal_alasan(){
+
+	$("#alasan").off('keydown');
+	$("#alasan").on('keydown',function(e) {
+        if(e.key === 'Enter') {
+        	e.preventDefault();
+            $("div#alasan_ok").click();
+        }
+    });
+
+	$('.ui.modal#alasan_modal').modal({
+		autofocus: false,
+		closable:false,
+		onApprove:function($element){
+			if($("form#form_alasan").valid()) {
+				$('input[name=status]').val('Tidak Hadir');
+				var formdata = $("form#form_nonpast").serializeArray();
+				var obj={alasan:$('#alasan').val()}
+
+				$.post( "./kelas/form",$.param(formdata)+'&'+$.param(obj), function( data ){
+				},'json').fail(function(data) {
+					location.reload()
+		        }).done(function(data){
+		        	if(data.operation == 'SUCCESS'){
+						location.reload()
+		        	}else{
+		        		$('#div_error').show();
+		        		$('#span_error').text(data.msg);
+		        	}
+		        });
+				return false;
+			}else{
+				return false;
+			}
+		},
+		onHidden:function($element){
+			emptyFormdata_div('form#form_alasan');
+		}
+	}).modal('show');
 }
