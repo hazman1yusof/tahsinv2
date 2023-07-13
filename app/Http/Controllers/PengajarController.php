@@ -92,6 +92,9 @@ class PengajarController extends Controller
             case 'getkelasdetail':
                 $this->getkelasdetail($request);
                 break;
+            case 'fcgetkelas_bersemuka':
+                $this->fcgetkelas_bersemuka($request);
+                break;
             default:
                 return 'error happen..';
         }
@@ -142,7 +145,6 @@ class PengajarController extends Controller
                 ->first();
 
         while ($loopdate->lte($until)) {
-
 
             $loopdate = $loopdate->next($jadual->hari);
 
@@ -213,6 +215,36 @@ class PengajarController extends Controller
 
             return response($e->getMessage(), 500);
         }
+
+    }
+
+    public function fcgetkelas_bersemuka(Request $request){
+        $weekday = [];
+        $loopdate = Carbon::parse($request->start);
+        $until = Carbon::parse($request->end);
+
+        if(!empty(Auth::user()->kelas)){
+
+            $jadual = DB::table('jadual')
+                    ->where('type','weekly')
+                    ->where('kelas_id',2)//idno 2 utk bersemuka
+                    ->first();
+
+            while ($loopdate->lte($until)) {
+
+                $loopdate = $loopdate->next($jadual->hari);
+
+                $responce = new stdClass();
+                $responce->date = $loopdate->format('Y-m-d');
+                $responce->time = $jadual->time;
+                $responce->title = $jadual->title;
+                $responce->url = './pengajar_detail?kelas_id='.'2'.'&jadual_id='.$jadual->idno;
+
+                array_push($weekday, $responce);
+            }
+
+        }
+        echo json_encode($weekday);
 
     }
 

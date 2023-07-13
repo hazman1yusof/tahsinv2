@@ -128,7 +128,7 @@ span.alasan{
     color: darkred;
     font-size: 11px;
 }
-textarea#remark_after,textarea#remark_b4{border-color: transparent;}
+textarea#remark_after,textarea#remark_b4,textarea#remark_bersemuka{border-color: transparent;}
 button.copy.icon.button{
     position: absolute;
     right: 10px;

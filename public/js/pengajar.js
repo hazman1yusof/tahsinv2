@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   					eventSources: [
   						'./pengajar/table?action=fcgetkelas',
   						'./pengajar/table?action=fcgetkelas_weekly',
+  						'./pengajar/table?action=fcgetkelas_bersemuka',
   					],
   					dateClick: function(info) {
   						$('div#calendar td').removeClass('activetd');
