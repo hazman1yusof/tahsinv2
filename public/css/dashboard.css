@@ -129,3 +129,10 @@ span.alasan{
     font-size: 11px;
 }
 textarea#remark_after,textarea#remark_b4{border-color: transparent;}
+button.copy.icon.button{
+    position: absolute;
+    right: 10px;
+    bottom: 110px;
+    padding: 8px;
+    background: aliceblue;
+}

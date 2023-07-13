@@ -77,6 +77,9 @@ class DashboardController extends Controller
                             ->where('kelas',$kelas_id)
                             ->count();
 
+            $count_kelas_bersemuka = DB::table('users')
+                            ->count();
+
             $user_kd = DB::table('users as u')
                         ->select('kd.idno','kd.kelas_id','u.id as user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.alasan','kd.surah2','kd.ms2','kd.marked','u.name')
                         ->leftJoin('kelas_detail as kd', function($join) use ($request,$kelas_id,$jadual,$date_after){
@@ -110,7 +113,54 @@ class DashboardController extends Controller
             }else{
                 $user_detail->age = '';
             }
-        return view('dashboard',compact('user_detail','kd_b4','date_b4','user_kdb4','kd_after','date_after','jadual','count_kelas','user_kd'));
+
+
+            $bersemuka = DB::table('kelas as k')
+                                ->select('j.idno','j.kelas_id','j.title','j.type','j.hari','j.date','j.time','j.timer','j.adduser','j.adddate','j.upduser','j.upddate','k.name')
+                                ->where('bersemuka','1')
+                                ->leftJoin('jadual as j', function($join) use ($request){
+                                        $join = $join->on('k.idno', '=', 'j.kelas_id');
+                                })
+                                ->first();
+
+            $today_day = Carbon::now("Asia/Kuala_Lumpur")->format('l');
+            if($today_day == $bersemuka->hari){
+                $date_bersemuka = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+            }else{
+                $date_bersemuka = Carbon::parse("next ".$bersemuka->hari)->format('Y-m-d');
+            }
+
+            $bersemuka->date = $date_bersemuka;
+
+            $kd_bersemuka = DB::table('kelas_detail')
+                            ->where('kelas_id',$bersemuka->kelas_id)
+                            ->where('user_id',Auth::user()->id)
+                            ->where('jadual_id',$bersemuka->idno)
+                            ->where('type','weekly')
+                            ->where('date',$date_bersemuka)
+                            ->where('time',$bersemuka->time)
+                            ->orderBy('date', 'asc');
+
+            if($kd_bersemuka->exists()){
+                $kd_bersemuka = $kd_bersemuka->first();
+            }else{
+                $kd_bersemuka = null;
+            }
+
+            $user_bersemuka = DB::table('kelas_detail as kd')
+                        ->select('kd.idno','kd.kelas_id','u.id as user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.alasan','kd.surah2','kd.ms2','kd.marked','u.name')
+                        ->leftJoin('users as u', function($join) use ($request){
+                                $join = $join->on('u.id', '=', 'kd.user_id');
+                        })
+                        ->where('kd.kelas_id',$bersemuka->kelas_id)
+                        ->where('kd.jadual_id',$bersemuka->idno)
+                        ->where('kd.type','weekly')
+                        ->where('kd.date',$date_bersemuka)
+                        ->where('kd.time',$bersemuka->time)
+                        ->orderBy('kd.pos', 'asc')
+                        ->get();
+
+        return view('dashboard',compact('user_detail','kd_b4','date_b4','user_kdb4','kd_after','date_after','jadual','count_kelas','count_kelas_bersemuka','user_kd','bersemuka','kd_bersemuka','user_bersemuka'));
     }
 
     public function upd_user(Request $request){
