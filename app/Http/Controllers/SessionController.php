@@ -8,6 +8,7 @@ use DB;
 use Auth;
 use Hash;
 use Session;
+use Carbon\Carbon;
 
 class SessionController extends Controller
 {
@@ -52,7 +53,9 @@ class SessionController extends Controller
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
 
-        return view('login')->with('success', 'Registration Succesfull, please login');
+        $success = 'Registration Succesfull, please login';
+
+        return redirect('/login')->with('success', $success);
     }
 
     public function login(Request $request)

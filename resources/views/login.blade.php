@@ -40,6 +40,16 @@
 		</div>
 		
 	</div>
+
+
+	@if (Session::has('success'))
+	<div class="ui centered grid">
+    <div class="ui blue message">
+			<div class="header">{{Session::get('success')}}</div>
+    </div>
+  </div>
+	@endif
+
 	@if($errors->any())
 	<div class="ui centered grid">
 		<div class="ui error message">
