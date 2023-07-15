@@ -19,6 +19,7 @@ class SetupController extends Controller
 
         $kelas = DB::table('kelas')
                     ->whereNull('tambahan')
+                    ->whereNull('bersemuka')
                     ->get();
 
         return view('setup_user',compact('kelas'));
@@ -127,9 +128,17 @@ class SetupController extends Controller
 
         try {
             if($request->oper == 'add'){
+                $users = DB::table('users')
+                            ->where('username',$request->username);
+
+                if($users->exists()){
+                    throw new \Exception('Duplicate Username', 500);
+                }
+
                 DB::table('users')
                     ->insert([
                         'username' => $request->username,
+                        'name' => $request->name,
                         'password' => $request->username,
                         'kelas' => $request->kelas,
                         'type' => $request->type,
@@ -143,6 +152,7 @@ class SetupController extends Controller
                     ->where('id',$request->id)
                     ->update([
                         'kelas' => $request->kelas,
+                        'name' => $request->name,
                         'type' => $request->type,
                         'ajar' => $ajar,
                         'setup' => $setup,
@@ -150,9 +160,28 @@ class SetupController extends Controller
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
             }else if($request->oper == 'del'){
+                $kd = DB::table('kelas_detail')
+                            ->where('user_id',$request->id);
+
+                if($kd->exists()){
+                    throw new \Exception('User already attend class! Cant delete..', 500);
+                }
+
                 DB::table('users')
                     ->where('id',$request->id)
                     ->delete();
+            }else if($request->oper == 'reset'){
+                $users = DB::table('users')
+                            ->where('id',$request->id)
+                            ->first();
+
+                DB::table('users')
+                    ->where('id',$request->id)
+                    ->update([
+                        'password' => $users->username,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
             }
 
             DB::commit();
@@ -164,7 +193,10 @@ class SetupController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            $responce = new stdClass();
+            $responce->operation = 'ERROR';
+            $responce->msg = $e->getMessage();
+            echo json_encode($responce);
         }
 
     }

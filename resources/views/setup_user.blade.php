@@ -47,6 +47,10 @@
         <input type="text" name="username" id="username" class="uppercase" required readonly>
       </div>
       <div class="field">
+        <label>Name</label>
+        <input type="text" name="name" id="name">
+      </div>
+      <div class="field">
           <label>Kelas</label>
           <select class="ui dropdown" name="kelas">
             <option value="">Pilih Kelas</option>
@@ -83,6 +87,9 @@
     <button class="ui deny button" id="cancel">
       Cancel
     </button>
+    <button class="ui orange button" id="reset">
+      Reset Password
+    </button>
     <button class="ui ok right labeled icon button red" id="delete">
       Delete
       <i class="trash alternate outline icon"></i>
@@ -97,11 +104,11 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('css/setup.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('css/setup.css')}}?v=1">
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/setup_user.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/setup_user.js') }}?v=1"></script>
 @endsection
 
 

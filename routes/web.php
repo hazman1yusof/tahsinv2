@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login','SessionController@index')->name('login');
 Route::post('/login','SessionController@login');
 Route::get('/logout','SessionController@destroy');
+Route::get('/register','SessionController@register')->name('register');
+Route::post('/register','SessionController@register_user');
 
 Route::get('/','DashboardController@dashboard');
 Route::get('/dashboard','DashboardController@dashboard');

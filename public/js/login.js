@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('.ui.checkbox')
-	  .checkbox()
-	;
+	  .checkbox();
+    
 	$('#showpwd').click(function(){
       if(!$(this).hasClass('slash')){
         $(this).addClass('slash');

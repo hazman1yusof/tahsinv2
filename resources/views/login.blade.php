@@ -32,6 +32,7 @@
 						</div>
 					</div>
 				<button class="ui fluid basic button" type="submit" style="margin-top: 10px; background: rgb(255 255 255);"><b>Log In</b></button>
+				<span class="register">Dont have username yet? try <a href="./register">Register</a></span>
 				</div>
 
 				
@@ -81,6 +82,15 @@
 	    text-decoration-style: double;
 	    text-decoration-line: underline;
 	    text-decoration-thickness: from-font;
+    }
+    span.register{
+    	padding: 5px;
+    	text-align: center;
+	    display: block;
+	    background: #f0f8ff66;
+	    margin-top: 13px;
+	    border-radius: 5px;
+	    color: black;
     }
 </style>
 @endsection
