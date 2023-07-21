@@ -24,6 +24,7 @@ Route::post('/upd_user','DashboardController@upd_user_post');
 Route::get('/setup_user','SetupController@setup_user');
 Route::get('/setup_kelas','SetupController@setup_kelas');
 Route::get('/setup_jadual','SetupController@setup_jadual');
+Route::get('/setup_tilawah','SetupController@setup_tilawah');
 Route::post('/setup/form','SetupController@form');
 Route::get('/setup/table','SetupController@table');
 
@@ -37,3 +38,8 @@ Route::get('/pengajar_detail','PengajarController@pengajar_detail');
 Route::get('/mark','PengajarController@mark');
 Route::post('/pengajar/form','PengajarController@form');
 Route::get('/pengajar/table','PengajarController@table');
+
+Route::get('/tilawah','TilawahController@tilawah');
+Route::get('/tilawah_detail','TilawahController@tilawah_detail');
+Route::get('/tilawah/form','TilawahController@form');
+Route::get('/tilawah/table','TilawahController@table');

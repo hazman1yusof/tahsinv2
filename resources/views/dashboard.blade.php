@@ -221,6 +221,7 @@
                     <h5 class="ui top attached negative message" id="div_error" style="display:none;">
                       <i class="warning icon"></i><span id="span_error"></span>
                     </h5>
+                    <button type="button" id="kelas_after_cp" class="ui circular copy icon button" data-content="Message Copied"><i class="clipboard icon"></i> Copy</button>
                     <div class="ui segment blue user_kd">
                      <p><b>Pelajar Hadir:</b>
                         <div class="ui yellow label mytlabel" style="float:right">
@@ -269,7 +270,6 @@
                           @endif
                       @endforeach
                     </div>
-                    <button type="button" id="kelas_after_cp" class="ui circular copy icon button" data-content="Message Copied"><i class="clipboard icon"></i> Copy</button>
                     <table>
                         <tr>
                             <th>Kelas</th>

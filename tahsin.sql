@@ -108,7 +108,7 @@ CREATE TABLE `kelas_detail` (
   `marked` int(1) DEFAULT '0',
   `alasan` varbinary(333) DEFAULT NULL,
   PRIMARY KEY (`idno`,`kelas_id`,`user_id`,`jadual_id`,`type`,`date`,`time`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 
 /*Data for the table `kelas_detail` */
 
@@ -126,7 +126,49 @@ insert  into `kelas_detail`(`idno`,`kelas_id`,`user_id`,`jadual_id`,`type`,`date
 (36,1,5,1,'weekly','2023-07-17','22:00:00','Hadir',3,'2023-07-13 19:24:20','hafiz',NULL,NULL,'12','32',NULL,NULL,NULL,NULL,0,NULL),
 (37,1,4,1,'weekly','2023-07-17','22:00:00','Hadir',9,'2023-07-13 19:24:48','amirul',NULL,NULL,'23','23',NULL,NULL,NULL,NULL,0,NULL),
 (38,1,8,1,'weekly','2023-07-17','22:00:00','Hadir',8,'2023-07-13 19:25:11','ismail',NULL,NULL,'12','12',NULL,NULL,NULL,NULL,0,NULL),
-(39,2,8,2,'weekly','2023-07-15','09:00:00','Hadir',18,'2023-07-13 19:38:09','ismail',NULL,NULL,'45','45',NULL,NULL,NULL,NULL,0,NULL);
+(39,2,8,2,'weekly','2023-07-15','09:00:00','Hadir',18,'2023-07-13 19:38:09','ismail',NULL,NULL,'45','45',NULL,NULL,NULL,NULL,0,NULL),
+(40,1,3,1,'weekly','2023-07-24','22:00:00','Hadir',1,'2023-07-20 16:32:58','hazman',NULL,NULL,'12','12',NULL,NULL,NULL,NULL,0,NULL);
+
+/*Table structure for table `tilawah` */
+
+DROP TABLE IF EXISTS `tilawah`;
+
+CREATE TABLE `tilawah` (
+  `idno` int(11) NOT NULL AUTO_INCREMENT,
+  `giliran` int(11) DEFAULT NULL,
+  `user_id` int(222) DEFAULT NULL,
+  `ms1` int(11) DEFAULT NULL,
+  `ms2` int(11) DEFAULT NULL,
+  `lastupdate` datetime DEFAULT NULL,
+  `lastuser` varchar(222) DEFAULT NULL,
+  `effectivedate` date DEFAULT NULL,
+  PRIMARY KEY (`idno`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+/*Data for the table `tilawah` */
+
+insert  into `tilawah`(`idno`,`giliran`,`user_id`,`ms1`,`ms2`,`lastupdate`,`lastuser`,`effectivedate`) values 
+(1,2,13,2,2,'2023-07-21 13:23:05','hazman','2023-07-21'),
+(2,1,3,1,1,'2023-07-21 14:16:51','hazman','2023-07-21'),
+(3,3,4,3,3,'2023-07-21 14:18:39','hazman','2023-07-21');
+
+/*Table structure for table `tilawah_detail` */
+
+DROP TABLE IF EXISTS `tilawah_detail`;
+
+CREATE TABLE `tilawah_detail` (
+  `idno` int(11) NOT NULL AUTO_INCREMENT,
+  `giliran` int(11) DEFAULT NULL,
+  `user_id` varchar(222) DEFAULT NULL,
+  `ms1` int(11) DEFAULT NULL,
+  `ms2` int(11) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `adddate` datetime DEFAULT NULL,
+  `adduser` varchar(222) DEFAULT NULL,
+  PRIMARY KEY (`idno`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `tilawah_detail` */
 
 /*Table structure for table `transactions` */
 

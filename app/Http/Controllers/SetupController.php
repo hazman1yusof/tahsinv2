@@ -45,6 +45,23 @@ class SetupController extends Controller
         return view('setup_jadual',compact('kelas'));
     }
 
+    public function setup_tilawah(Request $request){
+        
+        $users = DB::table('users')
+                    ->get();
+
+        $effdate = DB::table('tilawah')
+                    ->whereNotNull('effectivedate');
+                    
+        if($effdate->exists()){
+            $effdate = $effdate->first()->effectivedate;
+        }else{
+            $effdate = null;
+        }
+
+        return view('setup_tilawah',compact('users','effdate'));
+    }
+
     public function table(Request $request){
         switch($request->action){
             case 'getuser':
@@ -55,6 +72,9 @@ class SetupController extends Controller
                 break;
             case 'getjadual':
                 $this->getjadual($request);
+                break;
+            case 'gettilawah':
+                $this->gettilawah($request);
                 break;
             default:
                 return 'error happen..';
@@ -72,6 +92,12 @@ class SetupController extends Controller
                 break;
             case 'save_jadual':
                 $this->save_jadual($request);
+                break;
+            case 'save_tilawah':
+                $this->save_tilawah($request);
+                break;
+            case 'save_tilawah_effdate':
+                $this->save_tilawah_effdate($request);
                 break;
             default:
                 return 'error happen..';
@@ -115,6 +141,17 @@ class SetupController extends Controller
 
         $responce = new stdClass();
         $responce->data = $kelas;
+
+        echo json_encode($responce);
+    }
+
+    public function gettilawah(Request $request){
+        $tilawah = DB::table('tilawah')
+                    ->orderBy('giliran', 'asc')
+                    ->get();
+
+        $responce = new stdClass();
+        $responce->data = $tilawah;
 
         echo json_encode($responce);
     }
@@ -221,7 +258,6 @@ class SetupController extends Controller
 
     }
 
-
     public function save_jadual(Request $request){
         DB::beginTransaction();
 
@@ -270,5 +306,71 @@ class SetupController extends Controller
 
     }
 
+    public function save_tilawah(Request $request){
+        DB::beginTransaction();
+        try {
+            if($request->oper == 'add'){
+                DB::table('tilawah')
+                    ->insert([
+                        'giliran' => $request->giliran,
+                        'user_id' => $request->user_id,
+                        'ms1' => $request->ms1,
+                        'ms2' => $request->ms2,
+                        'lastuser' => session('username'),
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }else if($request->oper == 'edit'){
+                DB::table('tilawah')
+                    ->where('idno',$request->idno)
+                    ->update([
+                        'giliran' => $request->giliran,
+                        'user_id' => $request->user_id,
+                        'ms1' => $request->ms1,
+                        'ms2' => $request->ms2,
+                        'lastuser' => session('username'),
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }else if($request->oper == 'del'){
+                // DB::table('tilawah')
+                //     ->where('idno',$request->idno)
+                //     ->delete();
+            }
+
+            DB::commit();
+            
+            $responce = new stdClass();
+            $responce->operation = 'SUCCESS';
+            echo json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+
+    }
+
+
+    public function save_tilawah_effdate(Request $request){
+        DB::beginTransaction();
+        try {
+            DB::table('tilawah')
+                ->update([
+                    'effectivedate' => $request->effectivedate
+                ]);
+
+            DB::commit();
+            
+            $responce = new stdClass();
+            $responce->operation = 'SUCCESS';
+            echo json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+
+    }
 
 }
