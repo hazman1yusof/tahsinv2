@@ -1,5 +1,5 @@
 /*
-SQLyog Enterprise v13.1.1 (64 bit)
+SQLyog Community v12.5.0 (32 bit)
 MySQL - 5.7.24 : Database - tahsin
 *********************************************************************
 */
@@ -73,11 +73,12 @@ CREATE TABLE `kelas` (
   `upddate` datetime DEFAULT NULL,
   `bersemuka` varchar(11) DEFAULT NULL,
   PRIMARY KEY (`idno`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `kelas` */
 
 insert  into `kelas`(`idno`,`name`,`tambahan`,`terbuka`,`ketua`,`pengajar`,`adduser`,`adddate`,`upduser`,`upddate`,`bersemuka`) values 
+(0,'TIADA KELAS',NULL,NULL,NULL,NULL,'hazman','2023-07-22 03:14:41',NULL,NULL,NULL),
 (1,'QC 6.0 MUNAWWARAH',NULL,NULL,'2','2',NULL,NULL,'hazman','2023-06-10 01:31:05',NULL),
 (2,'KELAS BERSEMUKA',NULL,NULL,NULL,NULL,'hazman','2023-07-11 17:25:39',NULL,NULL,'1');
 
@@ -108,7 +109,7 @@ CREATE TABLE `kelas_detail` (
   `marked` int(1) DEFAULT '0',
   `alasan` varbinary(333) DEFAULT NULL,
   PRIMARY KEY (`idno`,`kelas_id`,`user_id`,`jadual_id`,`type`,`date`,`time`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 
 /*Data for the table `kelas_detail` */
 
@@ -124,10 +125,11 @@ insert  into `kelas_detail`(`idno`,`kelas_id`,`user_id`,`jadual_id`,`type`,`date
 (34,2,3,2,'weekly','2023-07-15','09:00:00','Tidak Hadir',0,'2023-07-13 18:24:35','hazman',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'sadsad'),
 (35,1,2,1,'weekly','2023-07-17','22:00:00','Tidak Hadir',0,'2023-07-13 19:24:00','nadiyah',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'asdsadsad'),
 (36,1,5,1,'weekly','2023-07-17','22:00:00','Hadir',3,'2023-07-13 19:24:20','hafiz',NULL,NULL,'12','32',NULL,NULL,NULL,NULL,0,NULL),
-(37,1,4,1,'weekly','2023-07-17','22:00:00','Hadir',9,'2023-07-13 19:24:48','amirul',NULL,NULL,'23','23',NULL,NULL,NULL,NULL,0,NULL),
+(37,1,4,1,'weekly','2023-07-17','22:00:00','Hadir',9,'2023-07-13 19:24:48','amirul',NULL,NULL,'23','23',NULL,0,NULL,NULL,1,NULL),
 (38,1,8,1,'weekly','2023-07-17','22:00:00','Hadir',8,'2023-07-13 19:25:11','ismail',NULL,NULL,'12','12',NULL,NULL,NULL,NULL,0,NULL),
 (39,2,8,2,'weekly','2023-07-15','09:00:00','Hadir',18,'2023-07-13 19:38:09','ismail',NULL,NULL,'45','45',NULL,NULL,NULL,NULL,0,NULL),
-(40,1,3,1,'weekly','2023-07-24','22:00:00','Hadir',1,'2023-07-20 16:32:58','hazman',NULL,NULL,'12','12',NULL,NULL,NULL,NULL,0,NULL);
+(40,1,3,1,'weekly','2023-07-24','22:00:00','Hadir',1,'2023-07-20 16:32:58','hazman',NULL,NULL,'12','12',NULL,NULL,NULL,NULL,0,NULL),
+(41,2,24,2,'weekly','2023-07-22','09:00:00','Tidak Hadir',0,'2023-07-22 03:18:03','zamri',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,'64');
 
 /*Table structure for table `tilawah` */
 
@@ -143,14 +145,16 @@ CREATE TABLE `tilawah` (
   `lastuser` varchar(222) DEFAULT NULL,
   `effectivedate` date DEFAULT NULL,
   PRIMARY KEY (`idno`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tilawah` */
 
 insert  into `tilawah`(`idno`,`giliran`,`user_id`,`ms1`,`ms2`,`lastupdate`,`lastuser`,`effectivedate`) values 
-(1,2,13,2,2,'2023-07-21 13:23:05','hazman','2023-07-21'),
-(2,1,3,1,1,'2023-07-21 14:16:51','hazman','2023-07-21'),
-(3,3,4,3,3,'2023-07-21 14:18:39','hazman','2023-07-21');
+(1,2,5,349,356,'2023-07-22 01:51:47','hazman','2023-07-21'),
+(2,1,22,341,348,'2023-07-22 01:51:25','hazman','2023-07-21'),
+(3,3,4,365,372,'2023-07-22 01:52:08','hazman','2023-07-21'),
+(4,4,20,373,380,'2023-07-22 01:52:28','hazman',NULL),
+(5,5,9,1,111,'2023-07-22 03:22:32','zamri',NULL);
 
 /*Table structure for table `tilawah_detail` */
 
@@ -166,9 +170,15 @@ CREATE TABLE `tilawah_detail` (
   `adddate` datetime DEFAULT NULL,
   `adduser` varchar(222) DEFAULT NULL,
   PRIMARY KEY (`idno`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tilawah_detail` */
+
+insert  into `tilawah_detail`(`idno`,`giliran`,`user_id`,`ms1`,`ms2`,`date`,`adddate`,`adduser`) values 
+(2,2,'3',1,1,'2023-08-06','2023-07-22 01:35:17','hazman'),
+(3,3,'20',373,380,'2023-07-23','2023-07-22 01:57:57','haziman'),
+(4,1,'20',349,356,'2023-08-06','2023-07-22 02:06:21','haziman'),
+(5,0,'20',341,348,'2023-07-30','2023-07-22 02:06:41','haziman');
 
 /*Table structure for table `transactions` */
 
@@ -201,7 +211,7 @@ CREATE TABLE `users` (
   `username` varchar(333) DEFAULT NULL,
   `password` varchar(333) DEFAULT NULL,
   `name` varchar(333) DEFAULT NULL,
-  `kelas` varchar(333) DEFAULT NULL,
+  `kelas` varchar(333) DEFAULT '0',
   `type` varchar(333) DEFAULT NULL,
   `ajar` varchar(333) DEFAULT NULL,
   `setup` varchar(333) DEFAULT NULL,
@@ -221,7 +231,7 @@ CREATE TABLE `users` (
   `last_ms` varchar(333) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 /*Data for the table `users` */
 
@@ -243,7 +253,8 @@ insert  into `users`(`id`,`username`,`password`,`name`,`kelas`,`type`,`ajar`,`se
 (18,'hasliana','hasliana','HASLIANA','1','pelajar',NULL,NULL,'12','sadsad',NULL,NULL,'870112435017','1987-01-12','Lelaki',NULL,NULL,NULL,'hasliana','2023-07-05 13:18:16',NULL,NULL),
 (20,'haziman','haziman','HAZIMAN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (22,'rashidah','rashidah','RASHIDAH','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-(23,'shikin','shikin','SHIKIN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+(23,'shikin','shikin','SHIKIN','1','pelajar',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(24,'zamri','zamri','USTAZ ZAMRI','0','ustaz','1','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
