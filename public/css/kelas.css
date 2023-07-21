@@ -117,3 +117,6 @@ span.alasan{
     color: darkred;
     font-size: 11px;
 }
+button.copy{
+	margin: 5px !important;
+}

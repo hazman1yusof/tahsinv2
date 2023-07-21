@@ -43,5 +43,5 @@ Route::get('/pengajar/table','PengajarController@table');
 
 Route::get('/tilawah','TilawahController@tilawah');
 Route::get('/tilawah_detail','TilawahController@tilawah_detail');
-Route::get('/tilawah/form','TilawahController@form');
+Route::post('/tilawah/form','TilawahController@form');
 Route::get('/tilawah/table','TilawahController@table');

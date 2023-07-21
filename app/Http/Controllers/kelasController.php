@@ -150,8 +150,7 @@ class kelasController extends Controller
             }
 
         }
-
-        echo $return;
+        echo json_encode($return);
 
     }
 
@@ -204,37 +203,34 @@ class kelasController extends Controller
         $loopdate = Carbon::parse($request->start);
         $until = Carbon::parse($request->end);
 
-        if(!empty(Auth::user()->kelas)){
+        $jadual = DB::table('jadual')
+                ->where('type','weekly')
+                ->where('kelas_id',2)//idno 2 utk bersemuka
+                ->first();
 
-            $jadual = DB::table('jadual')
+        while ($loopdate->lte($until)) {
+
+            $loopdate = $loopdate->next($jadual->hari);
+
+            $responce = new stdClass();
+            $responce->date = $loopdate->format('Y-m-d');
+            $responce->time = $jadual->time;
+            $responce->title = $jadual->title;
+            $responce->url = './kelas_detail?kelas_id='.'2'.'&user_id='.Auth::user()->id.'&jadual_id='.$jadual->idno.'&type='.$jadual->type.'&time='.$jadual->time;
+
+            $kelas_detail = DB::table('kelas_detail')
+                    ->where('kelas_id',2)
+                    ->where('user_id', '=', Auth::user()->id)
+                    ->where('jadual_id',$jadual->idno)
                     ->where('type','weekly')
-                    ->where('kelas_id',2)//idno 2 utk bersemuka
-                    ->first();
+                    ->whereDate('date','=',$loopdate->format('Y-m-d'));
 
-            while ($loopdate->lte($until)) {
-
-                $loopdate = $loopdate->next($jadual->hari);
-
-                $responce = new stdClass();
-                $responce->date = $loopdate->format('Y-m-d');
-                $responce->time = $jadual->time;
-                $responce->title = $jadual->title;
-                $responce->url = './kelas_detail?kelas_id='.'2'.'&user_id='.Auth::user()->id.'&jadual_id='.$jadual->idno.'&type='.$jadual->type.'&time='.$jadual->time;
-
-                $kelas_detail = DB::table('kelas_detail')
-                        ->where('kelas_id',2)
-                        ->where('user_id', '=', Auth::user()->id)
-                        ->where('jadual_id',$jadual->idno)
-                        ->where('type','weekly')
-                        ->whereDate('date','=',$loopdate->format('Y-m-d'));
-
-                if($kelas_detail->exists()){
-                    $kelas_detail_first = $kelas_detail->first();
-                    $responce->status = $kelas_detail_first->status;
-                }
-
-                array_push($weekday, $responce);
+            if($kelas_detail->exists()){
+                $kelas_detail_first = $kelas_detail->first();
+                $responce->status = $kelas_detail_first->status;
             }
+
+            array_push($weekday, $responce);
 
         }
         echo json_encode($weekday);

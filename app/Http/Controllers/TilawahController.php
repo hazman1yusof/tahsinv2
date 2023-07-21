@@ -15,6 +15,7 @@ class TilawahController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->billpad = 11;
     }
 
     public function tilawah(Request $request){
@@ -29,9 +30,11 @@ class TilawahController extends Controller
         if($effdate->exists()){
             $effdate = Carbon::parse($effdate->first()->effectivedate);
             $currdate = $request->date;
+            $currdate_mula = Carbon::parse($currdate)->previous('Monday')->format('Y-m-d');
 
             $effdate = $effdate->is('Sunday') ? $effdate : $effdate->next('Sunday');
             $diffinweeks = $effdate->diffInWeeks($currdate);
+            $bill = $diffinweeks + $this->billpad;
 
             if($effdate->gt($currdate)){
                 $tilawah_dtl=[];
@@ -70,6 +73,12 @@ class TilawahController extends Controller
                 $my_dtl = new stdClass();
                 $my_dtl->got = 'false';
 
+                $kelas = DB::table('kelas')
+                            ->whereNull('terbuka')
+                            ->whereNull('tambahan')
+                            ->whereNull('bersemuka')
+                            ->get();
+
                 $tilawah_c = DB::table('tilawah')
                             ->count();
 
@@ -79,7 +88,9 @@ class TilawahController extends Controller
 
                 foreach ($tilawah as $key => $value) {
                     $obj = new stdClass();
-                    $obj->giliran = $key;
+                    $obj->giliran = $key;;
+                    $obj->ms1 = $value->ms1;
+                    $obj->ms2 = $value->ms2;
 
                     array_push($tilawah_dtl, $obj);
                 }
@@ -91,8 +102,8 @@ class TilawahController extends Controller
                                         ->where('giliran',$my_giliran)
                                         ->where('user_id',$value->user_id)
                                         ->where('date',$currdate)
-                                        ->where('ms1',$value->ms1)
-                                        ->where('ms2',$value->ms2);
+                                        ->where('ms1',$tilawah_dtl[$my_giliran]->ms1)
+                                        ->where('ms2',$tilawah_dtl[$my_giliran]->ms2);
 
                     $user =  DB::table('users as u')
                                     ->select('u.username','u.name','u.kelas','k.name as kelas_name')
@@ -105,8 +116,8 @@ class TilawahController extends Controller
                     if($value->user_id == Auth::user()->id){
                         $my_dtl->giliran = $my_giliran;
                         $my_dtl->user_id = $value->user_id;
-                        $my_dtl->ms1 = $value->ms1;
-                        $my_dtl->ms2 = $value->ms2;
+                        $my_dtl->ms1 = $tilawah_dtl[$my_giliran]->ms1;
+                        $my_dtl->ms2 = $tilawah_dtl[$my_giliran]->ms2;
                         $my_dtl->date = $currdate;
                         $my_dtl->got = 'true';
                     }
@@ -116,8 +127,6 @@ class TilawahController extends Controller
                     $tilawah_dtl[$my_giliran]->name = $user->name;
                     $tilawah_dtl[$my_giliran]->kelas = $user->kelas;
                     $tilawah_dtl[$my_giliran]->kelas_name = $user->kelas_name;
-                    $tilawah_dtl[$my_giliran]->ms1 = $value->ms1;
-                    $tilawah_dtl[$my_giliran]->ms2 = $value->ms2;
                     $tilawah_dtl[$my_giliran]->date = $currdate;
 
                     if($tilawah_detail->exists()){
@@ -129,10 +138,10 @@ class TilawahController extends Controller
                 }
             }
         }else{
-            dd('Error: no effective date..');
+            dd('Error: no effective date for tilawah..');
         }
 
-        return view('tilawah_detail',compact('tilawah_dtl','ispast','my_dtl'));
+        return view('tilawah_detail',compact('tilawah_dtl','ispast','my_dtl','kelas','currdate','currdate_mula','bill'));
     }
 
     public function table(Request $request){
@@ -161,47 +170,26 @@ class TilawahController extends Controller
         $loopdate = Carbon::parse($request->start);
         $until = Carbon::parse($request->end);
 
-        if(!empty(Auth::user()->kelas)){
-            // $mykelas = Auth::user()->kelas;
+        while ($loopdate->lte($until)) {
+            $loopdate = $loopdate->next('SUNDAY');
 
-            // $jadual = DB::table('jadual')
-            //         ->where('type','weekly')
-            //         ->where('kelas_id',$mykelas)
-            //         ->first();
+            $responce = new stdClass();
+            $responce->date = $loopdate->format('Y-m-d');
+            $responce->title = 'Tilawah';
+            $responce->url = './tilawah_detail';
 
-            while ($loopdate->lte($until)) {
+            $tilawah_detail = DB::table('tilawah_detail')
+                                ->where('user_id',Auth::user()->id)
+                                ->where('date',$loopdate->format('Y-m-d'));
 
-
-                $loopdate = $loopdate->next('SUNDAY');
-
-                $responce = new stdClass();
-                $responce->date = $loopdate->format('Y-m-d');
-                $responce->title = 'Tilawah no ';
-                $responce->url = './tilawah_detail';
-
-                // $kelas_detail = DB::table('kelas_detail')
-                //         ->where('kelas_id',$mykelas)
-                //         ->where('user_id', '=', Auth::user()->id)
-                //         ->where('jadual_id',$jadual->idno)
-                //         ->where('type','weekly')
-                //         ->whereDate('date','=',$loopdate->format('Y-m-d'));
-
-                // if($kelas_detail->exists()){
-                //     $kelas_detail_first = $kelas_detail->first();
-                //     $responce->status = $kelas_detail_first->status;
-                // }
-
-                array_push($weekday, $responce);
+            if($tilawah_detail->exists()){
+                $responce->status = 'done';
+            }else{
+                $responce->status = 'xdone';
             }
-
-            // $return = $jadual->get();
-
-            // foreach ($return as $key => $value) {
-            //     $url = './kelas_detail?kelas_id='.$value->kelas_id.'&user_id='.Auth::user()->id.'&jadual_id='.$value->idno.'&type='.$value->type.'&time='.$value->time;
-            //     $value->url = $url;
-            // }
-
+            array_push($weekday, $responce);
         }
+        
         echo json_encode($weekday);
 
     }
