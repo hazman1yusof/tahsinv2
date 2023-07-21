@@ -22,7 +22,8 @@ class kelasController extends Controller
     }
 
     public function kelas_detail(Request $request){
-
+        
+        $iskelasbersemuka = $this->iskelasbersemuka($request);
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $request->date.' '.$request->time, new DateTimeZone('Asia/Kuala_Lumpur'));
         $kelas_detail=null;
 
@@ -46,9 +47,15 @@ class kelasController extends Controller
                     ->where('j.idno',$request->jadual_id)
                     ->first();
 
-        $count_kelas = DB::table('users')
+
+        if($iskelasbersemuka){
+            $count_kelas = DB::table('users')
+                            ->count();
+        }else{
+            $count_kelas = DB::table('users')
                             ->where('kelas',$request->kelas_id)
                             ->count();
+        }
 
         // $user_kd = DB::table('kelas_detail as kd')
         //                 ->select('kd.idno','kd.kelas_id','kd.user_id','kd.jadual_id','kd.type','kd.date','kd.time','kd.status','kd.pos','kd.adddate','kd.adduser','kd.upddate','kd.upduser','kd.surah','kd.ms','kd.remark','kd.rating','kd.surah2','kd.ms2','kd.marked','u.name')
@@ -73,10 +80,11 @@ class kelasController extends Controller
                                         ->where('kd.type',$request->type)
                                         ->where('kd.date',$request->date)
                                         ->where('kd.time',$request->time);
-                    })
-                    ->where('u.kelas',$request->kelas_id)
-                    ->orderBy('kd.pos', 'asc')
-                    ->get();
+                    });
+                    if(!$iskelasbersemuka){
+                        $user_kd = $user_kd->where('u.kelas',$request->kelas_id);
+                    }
+                    $user_kd = $user_kd->orderBy('kd.pos', 'asc')->get();
 
         if($date->isPast()){
             $ispast=true;
@@ -84,7 +92,7 @@ class kelasController extends Controller
             $ispast=false;
         }
 
-        return view('kelas_detail',compact('ispast','kelas_detail','jadual','date','count_kelas','user_kd'));
+        return view('kelas_detail',compact('ispast','kelas_detail','jadual','date','count_kelas','user_kd','iskelasbersemuka'));
     }
 
     public function table(Request $request){
@@ -94,6 +102,9 @@ class kelasController extends Controller
                 break;
             case 'fcgetkelas_weekly':
                 $this->fcgetkelas_weekly($request);
+                break;
+            case 'fcgetkelas_bersemuka':
+                $this->fcgetkelas_bersemuka($request);
                 break;
             default:
                 return 'error happen..';
@@ -183,12 +194,47 @@ class kelasController extends Controller
                 array_push($weekday, $responce);
             }
 
-            // $return = $jadual->get();
+        }
+        echo json_encode($weekday);
 
-            // foreach ($return as $key => $value) {
-            //     $url = './kelas_detail?kelas_id='.$value->kelas_id.'&user_id='.Auth::user()->id.'&jadual_id='.$value->idno.'&type='.$value->type.'&time='.$value->time;
-            //     $value->url = $url;
-            // }
+    }
+
+    public function fcgetkelas_bersemuka(Request $request){
+        $weekday = [];
+        $loopdate = Carbon::parse($request->start);
+        $until = Carbon::parse($request->end);
+
+        if(!empty(Auth::user()->kelas)){
+
+            $jadual = DB::table('jadual')
+                    ->where('type','weekly')
+                    ->where('kelas_id',2)//idno 2 utk bersemuka
+                    ->first();
+
+            while ($loopdate->lte($until)) {
+
+                $loopdate = $loopdate->next($jadual->hari);
+
+                $responce = new stdClass();
+                $responce->date = $loopdate->format('Y-m-d');
+                $responce->time = $jadual->time;
+                $responce->title = $jadual->title;
+                $responce->url = './kelas_detail?kelas_id='.'2'.'&user_id='.Auth::user()->id.'&jadual_id='.$jadual->idno.'&type='.$jadual->type.'&time='.$jadual->time;
+
+                $kelas_detail = DB::table('kelas_detail')
+                        ->where('kelas_id',2)
+                        ->where('user_id', '=', Auth::user()->id)
+                        ->where('jadual_id',$jadual->idno)
+                        ->where('type','weekly')
+                        ->whereDate('date','=',$loopdate->format('Y-m-d'));
+
+                if($kelas_detail->exists()){
+                    $kelas_detail_first = $kelas_detail->first();
+                    $responce->status = $kelas_detail_first->status;
+                }
+
+                array_push($weekday, $responce);
+            }
 
         }
         echo json_encode($weekday);
@@ -279,6 +325,14 @@ class kelasController extends Controller
 
         }
 
+    }
+
+    public function iskelasbersemuka(Request $request){
+        $kelas = DB::table('kelas')
+                    ->where('idno',$request->kelas_id)
+                    ->where('bersemuka','1');
+
+        return $kelas->exists();
     }
 
 

@@ -8,6 +8,7 @@ use DB;
 use Auth;
 use Hash;
 use Session;
+use Carbon\Carbon;
 
 class SessionController extends Controller
 {
@@ -19,6 +20,42 @@ class SessionController extends Controller
     public function index()
     {   
         return view('login');
+    }
+
+    public function register()
+    {   
+        $kelas = DB::table('kelas')
+                    ->whereNull('tambahan')
+                    ->whereNull('bersemuka')
+                    ->get();
+
+        return view('register',compact('kelas'));
+    }
+
+
+    public function register_user(Request $request)
+    {   
+        $users = DB::table('users')
+                    ->where('username',$request->username);
+
+        if($users->exists()){
+            return back()->withErrors(['Username already exists']);
+        }
+
+        DB::table('users')
+            ->insert([
+                'username' => $request->username,
+                'name' => $request->name,
+                'password' => $request->password,
+                'kelas' => $request->kelas,
+                'type' => 'pelajar',
+                'adduser' => 'self register',
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+            ]);
+
+        $success = 'Registration Succesfull, please login';
+
+        return redirect('/login')->with('success', $success);
     }
 
     public function login(Request $request)
@@ -42,10 +79,10 @@ class SessionController extends Controller
                 return redirect('/dashboard');
 
             }else{
-                return back()->withErrors(['Try again, Password entered incorrect']);
+                return back()->withErrors(['Password entered incorrect (password are case-sensitive)']);
             }
         }else{
-            return back()->withErrors(['Try again, Username or Password incorrect']);
+            return back()->withErrors(['Try again, Username incorrect']);
         }
     }
 

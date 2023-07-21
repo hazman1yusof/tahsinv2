@@ -8,6 +8,16 @@ if(my_marked == 1){
 	$('#div_marked').show();
 }
 
+if(my_marked_bersemuka==1){
+	$('.div_past_marked_bersemuka').hide();
+}else{
+	$('.div_past_marked_bersemuka').show();
+}
+
+if(my_marked_bersemuka == 1){
+	$('#div_marked_bersemuka').show();
+}
+
 $(document).ready(function () {
 	$('#btnhid_userdtl').click(function(){
 		if($(this).hasClass('plus')){
@@ -163,6 +173,7 @@ function init(){
 
 	$('#rating_after').rating('disable');
 	$('#rating_b4').rating('disable');
+	$('#rating_bersemuka').rating('disable');
 
 	init_textarea();
 	
@@ -252,7 +263,7 @@ function openmodal_alasan_bersemuka(){
 }
 
 function init_textarea(){
-	$('textarea#remark_b4,textarea#remark_after').each(function () {
+	$('textarea#remark_b4,textarea#remark_after,textarea#remark_bersemuka').each(function () {
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{

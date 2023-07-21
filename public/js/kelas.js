@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   					eventSources: [
   						'./kelas/table?action=fcgetkelas',
   						'./kelas/table?action=fcgetkelas_weekly',
+  						'./kelas/table?action=fcgetkelas_bersemuka',
   					],
   					dateClick: function(info) {
   						$('div#calendar td').removeClass('activetd');

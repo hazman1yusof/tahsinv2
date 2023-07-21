@@ -21,7 +21,7 @@
         @endforeach
     ];
     var user_pos_bersemuka = [
-        @foreach ($user_kd as $user)
+        @foreach ($user_bersemuka as $user)
             @if($user->user_id != Auth::user()->id)
             {{$user->pos}},
             @endif
@@ -44,6 +44,7 @@
         @endforeach 
     ];
     var my_marked = @if(!empty($kd_after)){{$kd_after->marked}}@else{{'0'}}@endif;
+    var my_marked_bersemuka = @if(!empty($kd_bersemuka)){{$kd_bersemuka->marked}}@else{{'0'}}@endif;
     
 </script>
 @endsection
@@ -454,7 +455,7 @@
                           </div>
                       </div>
                     </div>
-                    <div class="ui two buttons div_past_marked" style="">
+                    <div class="ui two buttons div_past_marked_bersemuka" style="">
                         <div class="ui negative button" id="tak_confirm_bersemuka">Tidak Hadir Kelas</div>
                         <div class="ui positive button" id="confirm_bersemuka">Hadir Kelas</div>
                     </div>

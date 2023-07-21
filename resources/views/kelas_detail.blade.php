@@ -29,8 +29,8 @@
         <h4 class="mytitle" style="position: relative;">
             <button class="circular ui icon button myback" onclick="window.location.replace('./kelas');">
                 <i class="arrow left icon"></i>
-            </button> 
-            Kelas
+            </button>
+            <span class="mytitle_name">{{$jadual->name}}</span>
         </h4>
 
         <form class="ui form" id="form_nonpast" autocomplete="off">
@@ -74,6 +74,7 @@
                   @endif
               @endforeach
 
+              @if(!$iskelasbersemuka)
               <p><b>Pelajar Tidak Respon:</b></p>
               @foreach ($user_kd as $user)
                 @if(empty($user->status))
@@ -86,6 +87,7 @@
                   </div>
                   @endif
               @endforeach
+              @endif
             </div>
 
             <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">

@@ -70,6 +70,12 @@ $(document).ready(function () {
 		    save_user('del');
 		}
 	});
+
+	$('#reset').click(function(){
+		if (confirm("Do you want to reset this user password (password will be the same as username)")) {
+		    save_user('reset');
+		}
+	});
 });
 
 function openmodal(oper){
@@ -109,6 +115,10 @@ function save_user(oper){
 	},'json').fail(function(data) {
   		after_save();
   	}).done(function(data){
+  		if(data.operation == 'ERROR'){
+  			alert(data.msg);
+  		}
+
   		after_save();
   	});
 }
@@ -116,8 +126,9 @@ function save_user(oper){
 function pop_user(){
 	$('#id').val(currrow.id);
 	$('#username').val(currrow.username);
-	$('select[name=kelas]').val(currrow.kelas);
-	$('select[name=type]').val(currrow.type);
+	$('#name').val(currrow.name);
+	$('select[name=kelas]').dropdown('set selected', currrow.kelas);
+	$('select[name=type]').dropdown('set selected', currrow.type);
 	if(currrow.ajar ==  1)$('input[type=checkbox][name=ajar]').prop('checked',true);
 	if(currrow.setup ==  1)$('input[type=checkbox][name=setup]').prop('checked',true);
 }
@@ -130,7 +141,9 @@ function after_save(){
 function init_form(oper){
 	if(oper == 'add'){
 		$('#username').prop('readonly',false);
+		$('#reset').hide();
 	}else{
 		$('#username').prop('readonly',true);
+		$('#reset').show();
 	}
 }

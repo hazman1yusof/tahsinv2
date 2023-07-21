@@ -31,7 +31,7 @@
             <div class="cssload-speeding-wheel"></div>
         </div>
 
-        @if(!Request::is('login'))
+        @if(!Request::is('login') && !Request::is('register'))
             @include('layouts.navs')
         @endif
         <div class="pusher container_sem overflowing" id="content">
