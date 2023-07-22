@@ -15,7 +15,7 @@ class TilawahController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->billpad = 11;
+        $this->billpad = 11; // start bila
     }
 
     public function tilawah(Request $request){
@@ -42,6 +42,16 @@ class TilawahController extends Controller
                 $my_dtl = new stdClass();
                 $my_dtl->got = 'false';
 
+                $kelas = DB::table('kelas')
+                            ->whereNull('terbuka')
+                            ->whereNull('tambahan')
+                            ->whereNull('bersemuka')
+                            ->get();
+
+                $tilawah = DB::table('tilawah')
+                            ->orderBy('giliran','asc')
+                            ->get();
+
                 $tilawah_detail = DB::table('tilawah_detail as td')
                                         ->select('td.idno','td.giliran','td.user_id','td.ms1','td.ms2','td.date','u.username','u.name','u.kelas','k.name as kelas_name')
                                         ->leftJoin('users as u', function($join) use ($request){
@@ -54,7 +64,7 @@ class TilawahController extends Controller
                                         ->orderBy('td.giliran','asc')
                                         ->get();
 
-                foreach ($tilawah as $key => $value) {
+                foreach ($tilawah_detail as $key => $value) {
                     $obj = new stdClass();
                     $obj->giliran = $key;
                     $obj->user_id = $value->user_id;
@@ -65,6 +75,8 @@ class TilawahController extends Controller
                     $obj->ms1 = $value->ms1;
                     $obj->ms2 = $value->ms2;
                     $obj->date = $value->date;
+
+                    array_push($tilawah_dtl, $obj);
                 }
 
             }else{
